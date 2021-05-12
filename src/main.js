@@ -1,9 +1,12 @@
 const tileSize = 32;
+const mapWidth = 18; // Number of tiles across map
+const gameSize = tileSize * mapWidth;
+let tpLength = 2;
 
 let config = {
     type: Phaser.WEBGL,
-    width: 576, // 32 * 18
-    height: 576,
+    width: gameSize,
+    height: gameSize,
     physics: {
         default: 'arcade',
         arcade: {
