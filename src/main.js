@@ -4,7 +4,8 @@ const gameSize = tileSize * mapWidth;
 let tpLength = 2;
 
 let config = {
-    type: Phaser.WEBGL,
+    type: Phaser.CANVAS, // Changed from WebGL
+    pixelArt: true, // Helps prevent tile bleeing
     width: gameSize,
     height: gameSize,
     physics: {
