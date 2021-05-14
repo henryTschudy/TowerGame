@@ -4,13 +4,16 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('tiles', [ 'assets/tilemaps/tiles/drawtiles1.png', 'assets/tilemaps/tiles/drawtiles1_n.png' ]);
+        // im kinda half asleep so i'll figure out these imports later
+        // Tilemap file is actually 576 x 4000 some in size. The latter is so we can scroll between levels.
+        this.load.image('tiles', [ 'assets/tilemaps/tiles/testerSet.png', 'assets/tilemaps/tiles/testerSet.png' ]);
         this.load.image('player', 'assets/sprites/player.png');
         this.load.tilemapCSV('map', 'assets/tilemaps/csv/grid.csv');
     }
 
     create() {
         // Produce static map elements
+        // Note: tileSize at 32. Variable allows up/down-scaling.
         var map = this.make.tilemap({ key: 'map', tileWidth: tileSize, tileHeight: tileSize });
         var tileset = map.addTilesetImage('tiles', null, tileSize, tileSize, 1, 2);
 
