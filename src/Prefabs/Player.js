@@ -7,6 +7,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add to physics system
         this.isMoving = false;
+        this.width = 32;
+        this.height =32;
     }
 
     sendToBottom () {
@@ -26,27 +28,31 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Something like this, src : https://phaser.io/examples/v3/view/game-objects/lights/tilemap-layer
         if(keySHIFT.isDown){
             // Emit particles to tell the player theyre in teleport mode
-            if (Phaser.Input.Keyboard.JustDown(keyA)){
+            if (Phaser.Input.Keyboard.JustDown(keyA) && this.x >= this.width * tpLength){
                 // Emit TP particles where player is before tp here
                 this.x -= tileSize * tpLength;
                 // Emit TP particles where player is after tp here
+                //Added Player cannot collide with wall 
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyD)){
+            else if (Phaser.Input.Keyboard.JustDown(keyD) && this.x < gameSize - this.width * tpLength){
                 // Follow above particle stuff for the following
                 this.x += tileSize * tpLength;
+                 //Added Player cannot collide with wall 
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyW)){            
+            else if (Phaser.Input.Keyboard.JustDown(keyW) && this.y >= this.height * tpLength){            
                 this.y -= tileSize * tpLength;
                 //this.angle = -90;
+                 //Added Player cannot collide with wall 
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyS)){
+            else if (Phaser.Input.Keyboard.JustDown(keyS) && this.y < gameSize - this.height * tpLength){
                 this.y += tileSize * tpLength;
                 //this.angle = 90;
+                 //Added Player cannot collide with wall 
             }
         }
         else{
             // Emit particles to tell the player theyre in teleport mode
-            if (Phaser.Input.Keyboard.JustDown(keyA) && !this.isMoving){
+            if (Phaser.Input.Keyboard.JustDown(keyA) && !this.isMoving && this.x >= this.width){
                 this.isMoving = true;
                 this.setVelocity(-tileSize * 2, 0);
                 // Something like this so that we move around in grid style
@@ -55,7 +61,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.setVelocity(0, 0);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.isMoving){
+            else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.isMoving && this.x < gameSize - this.width){
                 this.isMoving = true;
                 this.setVelocity(tileSize * 2, 0);
                 this.scene.time.delayedCall(500, () => {
@@ -63,7 +69,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.setVelocity(0, 0);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.isMoving){            
+            else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.isMoving && this.y >= this.height){            
                 this.isMoving = true;
                 this.setVelocity(0, -tileSize * 2);
                 this.scene.time.delayedCall(500, () => {
@@ -71,7 +77,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.setVelocity(0, 0);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.isMoving){
+            else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.isMoving && this.y < gameSize - this.height){
                 this.isMoving = true;
                 this.setVelocity(0, tileSize * 2);
                 this.scene.time.delayedCall(500, () => {
