@@ -6,16 +6,18 @@ class Play extends Phaser.Scene {
     preload() {
         // im kinda half asleep so i'll figure out these imports later
         // Tilemap file is actually 576 x 4000 some in size. The latter is so we can scroll between levels.
-        this.load.image('tiles', [ 'assets/tilemaps/tiles/testerSet.png', 'assets/tilemaps/tiles/testerSet.png' ]);
+        this.load.image('tiles', 'assets/tilemaps/tiles/testerSet.png');
         this.load.image('player', 'assets/sprites/player.png');
-        this.load.tilemapCSV('map', 'assets/tilemaps/csv/grid.csv');
+        this.load.tilemapTiledJSON('map', 'assets/tilemaps/data/testerTilemap.json');
     }
 
     create() {
         // Produce static map elements
         // Note: tileSize at 32. Variable allows up/down-scaling.
-        var map = this.make.tilemap({ key: 'map', tileWidth: tileSize, tileHeight: tileSize });
-        var tileset = map.addTilesetImage('tiles', null, tileSize, tileSize, 1, 2);
+        const map = this.make.tilemap({ key: 'map' });
+        const tileset = map.addTilesetImage('tileset', 'tiles');
+        var layer = map.createStaticLayer('Tile Layer 1', tileset);
+        layer.setCollisionByProperty({ collides: true});
 
         // Produce key meanings
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -25,10 +27,10 @@ class Play extends Phaser.Scene {
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         
         // Add in the player
+        // this.p1Spawn = map.find();
         this.player = new Player(this, tileSize * 2, tileSize * 2, 'player').setOrigin(0);
 
         // Add in the moving tiles
-        console.log('In here!');
     }
 
     update(time, delta) {

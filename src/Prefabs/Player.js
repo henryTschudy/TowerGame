@@ -25,19 +25,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Something like this, src : https://phaser.io/examples/v3/view/game-objects/lights/tilemap-layer
         if (Phaser.Input.Keyboard.JustDown(keyA)){
             this.x -= tileSize * tpLength;
-            this.angle = 180;
+            //this.angle = 180;
         }
         else if (Phaser.Input.Keyboard.JustDown(keyD)){
             this.x += tileSize * tpLength;
-            this.angle = 0;
+            //this.angle = 0;
         }
         else if (Phaser.Input.Keyboard.JustDown(keyW)){            
             this.y -= tileSize * tpLength;
-            this.angle = -90;
+            //this.angle = -90;
         }
         else if (Phaser.Input.Keyboard.JustDown(keyS)){
             this.y += tileSize * tpLength;
-            this.angle = 90;
+            //this.angle = 90;
         }
  
         // else -> move logic
