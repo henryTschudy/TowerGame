@@ -6,6 +6,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // set up physics sprite
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add to physics system
+        this.isMoving = false;
     }
 
     sendToBottom () {
@@ -23,24 +24,62 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     update() {
         // if keySHIFT and not walking -> teleport logic
         // Something like this, src : https://phaser.io/examples/v3/view/game-objects/lights/tilemap-layer
-        if (Phaser.Input.Keyboard.JustDown(keyA)){
-            this.x -= tileSize * tpLength;
-            //this.angle = 180;
+        if(keySHIFT.isDown){
+            // Emit particles to tell the player theyre in teleport mode
+            if (Phaser.Input.Keyboard.JustDown(keyA)){
+                // Emit TP particles where player is before tp here
+                this.x -= tileSize * tpLength;
+                // Emit TP particles where player is after tp here
+            }
+            else if (Phaser.Input.Keyboard.JustDown(keyD)){
+                // Follow above particle stuff for the following
+                this.x += tileSize * tpLength;
+            }
+            else if (Phaser.Input.Keyboard.JustDown(keyW)){            
+                this.y -= tileSize * tpLength;
+                //this.angle = -90;
+            }
+            else if (Phaser.Input.Keyboard.JustDown(keyS)){
+                this.y += tileSize * tpLength;
+                //this.angle = 90;
+            }
         }
-        else if (Phaser.Input.Keyboard.JustDown(keyD)){
-            this.x += tileSize * tpLength;
-            //this.angle = 0;
+        else{
+            // Emit particles to tell the player theyre in teleport mode
+            if (Phaser.Input.Keyboard.JustDown(keyA) && !this.isMoving){
+                this.isMoving = true;
+                this.setVelocity(-tileSize * 2, 0);
+                // Something like this so that we move around in grid style
+                this.scene.time.delayedCall(500, () => {
+                    this.isMoving = false;
+                    this.setVelocity(0, 0);
+                });
+            }
+            else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.isMoving){
+                this.isMoving = true;
+                this.setVelocity(tileSize * 2, 0);
+                this.scene.time.delayedCall(500, () => {
+                    this.isMoving = false;
+                    this.setVelocity(0, 0);
+                });
+            }
+            else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.isMoving){            
+                this.isMoving = true;
+                this.setVelocity(0, -tileSize * 2);
+                this.scene.time.delayedCall(500, () => {
+                    this.isMoving = false;
+                    this.setVelocity(0, 0);
+                });
+            }
+            else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.isMoving){
+                this.isMoving = true;
+                this.setVelocity(0, tileSize * 2);
+                this.scene.time.delayedCall(500, () => {
+                    this.isMoving = false;
+                    this.setVelocity(0, 0);
+                });
+            }
         }
-        else if (Phaser.Input.Keyboard.JustDown(keyW)){            
-            this.y -= tileSize * tpLength;
-            //this.angle = -90;
-        }
-        else if (Phaser.Input.Keyboard.JustDown(keyS)){
-            this.y += tileSize * tpLength;
-            //this.angle = 90;
-        }
- 
-        // else -> move logic
  
         // Collision logic handled in Play.js
     }
