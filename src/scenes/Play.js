@@ -15,7 +15,7 @@ class Play extends Phaser.Scene {
         // Produce static map elements
         // Note: tileSize at 32. Variable allows up/down-scaling.
         const map = this.make.tilemap({ key: 'map' });
-        const tileset = map.addTilesetImage('tileset', 'tiles');
+        const tileset = map.addTilesetImage('testerSet', 'tiles');
         var layer = map.createStaticLayer('Tile Layer 1', tileset);
         layer.setCollisionByProperty({ collides: true});
 
