@@ -9,7 +9,7 @@ class Play extends Phaser.Scene {
         this.load.image('tiles', 'assets/tilemaps/tiles/testerSet.png');
         this.load.image('player', 'assets/sprites/player.png');
         this.load.tilemapTiledJSON('map', 'assets/tilemaps/data/testerTilemap.json');
-        this.load.audio('background', '/assets/music/background.wav');
+        this.load.audio('background', 'assets/music/background.wav');
     }
 
     create() {
