@@ -9,6 +9,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isMoving = false;
         this.width = 32;
         this.height =32;
+        this.walkSpeed = 4;
     }
 
     sendToBottom () {
@@ -54,7 +55,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             // Emit particles to tell the player theyre in teleport mode
             if (Phaser.Input.Keyboard.JustDown(keyA) && !this.isMoving && this.x >= this.width){
                 this.isMoving = true;
-                this.setVelocity(-tileSize * 2, 0);
+                this.setVelocity(-tileSize * this.walkSpeed, 0);
                 // Something like this so that we move around in grid style
                 this.scene.time.delayedCall(500, () => {
                     this.isMoving = false;
@@ -63,7 +64,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
             else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.isMoving && this.x < gameSize - this.width){
                 this.isMoving = true;
-                this.setVelocity(tileSize * 2, 0);
+                this.setVelocity(tileSize * this.walkSpeed, 0);
                 this.scene.time.delayedCall(500, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
@@ -71,7 +72,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
             else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.isMoving && this.y >= this.height){            
                 this.isMoving = true;
-                this.setVelocity(0, -tileSize * 2);
+                this.setVelocity(0, -tileSize * this.walkSpeed);
                 this.scene.time.delayedCall(500, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
@@ -79,7 +80,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
             else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.isMoving && this.y < gameSize - this.height){
                 this.isMoving = true;
-                this.setVelocity(0, tileSize * 2);
+                this.setVelocity(0, tileSize * this.walkSpeed);
                 this.scene.time.delayedCall(500, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
