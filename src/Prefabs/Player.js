@@ -57,7 +57,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.isMoving = true;
                 this.setVelocity(-tileSize * this.walkSpeed, 0);
                 // Something like this so that we move around in grid style
-                this.scene.time.delayedCall(500, () => {
+                this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
                 });
@@ -65,7 +65,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.isMoving && this.x < gameSize - this.width){
                 this.isMoving = true;
                 this.setVelocity(tileSize * this.walkSpeed, 0);
-                this.scene.time.delayedCall(500, () => {
+                this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
                 });
@@ -73,7 +73,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.isMoving && this.y >= this.height){            
                 this.isMoving = true;
                 this.setVelocity(0, -tileSize * this.walkSpeed);
-                this.scene.time.delayedCall(500, () => {
+                this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
                 });
@@ -81,7 +81,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.isMoving && this.y < gameSize - this.height){
                 this.isMoving = true;
                 this.setVelocity(0, tileSize * this.walkSpeed);
-                this.scene.time.delayedCall(500, () => {
+                this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
                 });
