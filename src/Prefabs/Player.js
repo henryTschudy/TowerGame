@@ -53,7 +53,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         else{
             // Emit particles to tell the player theyre in teleport mode
-            if (Phaser.Input.Keyboard.JustDown(keyA) && !this.isMoving && this.x >= this.width){
+            if (Phaser.Input.Keyboard.JustDown(keyA) && !this.isMoving){
                 this.isMoving = true;
                 this.setVelocity(-tileSize * this.walkSpeed, 0);
                 // Something like this so that we move around in grid style
@@ -62,7 +62,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.setVelocity(0, 0);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.isMoving && this.x < gameSize - this.width){
+            else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.isMoving){
                 this.isMoving = true;
                 this.setVelocity(tileSize * this.walkSpeed, 0);
                 this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
@@ -70,7 +70,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.setVelocity(0, 0);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.isMoving && this.y >= this.height){            
+            else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.isMoving){            
                 this.isMoving = true;
                 this.setVelocity(0, -tileSize * this.walkSpeed);
                 this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
@@ -78,7 +78,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.setVelocity(0, 0);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.isMoving && this.y < gameSize - this.height){
+            else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.isMoving){
                 this.isMoving = true;
                 this.setVelocity(0, tileSize * this.walkSpeed);
                 this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
