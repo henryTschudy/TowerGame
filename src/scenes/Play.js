@@ -42,7 +42,7 @@ class Play extends Phaser.Scene {
         music.play();
 
         // Add in the player - NOTE : hardcoded items copied and pasted from js file because findObject ate too many crayons today and keeps saying p1Spawn is undef
-        this.player = new Player(this, 288, 2912, 'player').setOrigin(0.5);
+        this.player = new Player(this, 288, 2912, 'player').setOrigin(0);
         // this.player = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'player').setOrigin(0);
 
         // Add in the moving tiles
@@ -53,11 +53,11 @@ class Play extends Phaser.Scene {
         // this.physics.add.overlap(this.player, tilelayer); Check if player is overlapping collision tile?
 
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
-        this.ptestdbgScrollCam(this.cameras.main, 1)
+        this.ptestdbgScrollCam(this.cameras.main, 2)
     }
 
     ptestdbgScrollCam(cam, room){
-        this.cameras.main.setScroll(cam.scrollX, cam.scrollY - (7 - room) * cam.height);
+        this.cameras.main.setScroll(0, (7 - room) * 576);
     }
 
     update(time, delta) {

@@ -29,23 +29,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Something like this, src : https://phaser.io/examples/v3/view/game-objects/lights/tilemap-layer
         if(keySHIFT.isDown){
             // Emit particles to tell the player theyre in teleport mode
-            if (Phaser.Input.Keyboard.JustDown(keyA) && this.x >= this.width * tpLength){
+            if (Phaser.Input.Keyboard.JustDown(keyA)){
                 // Emit TP particles where player is before tp here
                 this.x -= tileSize * tpLength;
                 // Emit TP particles where player is after tp here
                 //Added Player cannot collide with wall 
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyD) && this.x < gameSize - this.width * tpLength){
+            else if (Phaser.Input.Keyboard.JustDown(keyD)){
                 // Follow above particle stuff for the following
                 this.x += tileSize * tpLength;
                  //Added Player cannot collide with wall 
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyW) && this.y >= this.height * tpLength){            
+            else if (Phaser.Input.Keyboard.JustDown(keyW)){            
                 this.y -= tileSize * tpLength;
                 //this.angle = -90;
                  //Added Player cannot collide with wall 
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyS) && this.y < gameSize - this.height * tpLength){
+            else if (Phaser.Input.Keyboard.JustDown(keyS)){
                 this.y += tileSize * tpLength;
                 //this.angle = 90;
                  //Added Player cannot collide with wall 
