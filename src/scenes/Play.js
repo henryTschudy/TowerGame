@@ -5,7 +5,8 @@ class Play extends Phaser.Scene {
 
     preload() {
         // Tilemap file is actually 576 x ~4000 some in size. The latter is so we can scroll/warp between levels.
-        this.load.image('tiles', './assets/tilemaps/tiles/testerSet.png');
+        this.load.image('testTiles', './assets/tilemaps/tiles/testerSet.png'); // Phase this line out
+        this.load.image('tiles', './assets/tilemaps/tiles/FinalTiles_-_Atlas.png');
         this.load.image('player', './assets/sprites/player.png');
         this.load.tilemapTiledJSON('map', './assets/tilemaps/data/testerTilemap.json');
         this.load.audio('background', './assets/music/background.wav');
@@ -15,9 +16,12 @@ class Play extends Phaser.Scene {
         // Produce static map elements
         // Note: tileSize at 32. Variable allows up/down-scaling.
         const map = this.add.tilemap('map');
-        const tileset = map.addTilesetImage('testerSet', 'tiles');
+        const testtileset = map.addTilesetImage('testerSet', 'testTiles'); // Phase this line out 
+        const tileset = map.addTilesetImage('FinalTiles_-_Atlas', 'tiles');
         const tilelayer = map.createLayer('Tiles', tileset, 0, 0);
+        const wallLayer = map.createLayer('Walls', tileset, 0, 0);
         const p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn');
+        
         // findObject is drunk :(
         // console.log(this.p1Spawn);
         // console.log(this.p1Spawn.x);
@@ -48,8 +52,11 @@ class Play extends Phaser.Scene {
         // Add in the moving tiles
 
         // Collision
+        // Condense this?
         tilelayer.setCollisionByProperty({ collides: true });
+        wallLayer.setCollisionByProperty({ collides: true });
         this.physics.add.collider(this.player, tilelayer);
+        this.physics.add.collider(this.player, wallLayer);
         // this.physics.add.overlap(this.player, tilelayer); Check if player is overlapping collision tile?
 
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
