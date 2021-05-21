@@ -5,7 +5,6 @@ class Play extends Phaser.Scene {
 
     preload() {
         // Tilemap file is actually 576 x ~4000 some in size. The latter is so we can scroll/warp between levels.
-       // this.load.image('testTiles', './assets/tilemaps/tiles/testerSet.png'); // Phase this line out
         this.load.image('tiles', './assets/tilemaps/tiles/FinalTiles_-_Atlas.png');
         this.load.image('player', './assets/sprites/player.png');
         this.load.tilemapTiledJSON('map', './assets/tilemaps/data/finalTilemap.json');
@@ -16,7 +15,6 @@ class Play extends Phaser.Scene {
         // Produce static map elements
         // Note: tileSize at 32. Variable allows up/down-scaling.
         const map = this.add.tilemap('map');
-        //const testtileset = map.addTilesetImage('testerSet', 'testTiles'); // Phase this line out 
         const tileset = map.addTilesetImage('FinalTiles_-_Atlas', 'tiles');
         const tilelayer = map.createLayer('Tiles', tileset, 0, 0);
         const wallLayer = map.createLayer('Walls', tileset, 0, 0);
@@ -52,10 +50,7 @@ class Play extends Phaser.Scene {
         // Add in the moving tiles
 
         // Collision
-        // Condense this?
-        tilelayer.setCollisionByProperty({ collides: true });
         wallLayer.setCollisionByProperty({ collides: true });
-        this.physics.add.collider(this.player, tilelayer);
         this.physics.add.collider(this.player, wallLayer);
         // this.physics.add.overlap(this.player, tilelayer); Check if player is overlapping collision tile?
 
