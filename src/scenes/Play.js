@@ -72,7 +72,7 @@ class Play extends Phaser.Scene {
         // If player is overlapping bad tile : Kill
         // if(this.player.touching.???){ this.player.playerDeath }
         if(!this.cameras.main.worldView.contains(this.player.x, this.player.y) && this.deathEnabled){ // Boolean set to be always false. Replace with bad player location overlaps.
-            this.player.playerDeath();
+            this.player.playerDeath(/* Pass in spawn coordinates */);
         }
         // this.movingBlocks.update() ?
     }

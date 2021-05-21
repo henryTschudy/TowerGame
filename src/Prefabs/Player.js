@@ -16,8 +16,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         ++tpLength;
     }
 
-    playerDeath () {
+    playerDeath (x, y) {
         console.log('I am Dead!')
+        // this.x = x;
+        // this.y = y;
     }
     // I'll have to look a bit more into FSMs
     // setState() {
