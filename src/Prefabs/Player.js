@@ -52,7 +52,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
         else{
-            // Emit particles to tell the player theyre in teleport mode
             if (Phaser.Input.Keyboard.JustDown(keyA) && !this.isMoving){
                 this.isMoving = true;
                 this.setVelocity(-tileSize * this.walkSpeed, 0);
@@ -60,6 +59,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
+                    if(this.x % 32 != 0){
+                        if(this.x % 32 > 16){
+                            this.x += 32 - (this.x % 32)
+                        }
+                        else{
+                            this.x -= this.x % 32
+                        }
+                    }
                 });
             }
             else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.isMoving){
@@ -68,6 +75,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
+                    if(this.x % 32 != 0){
+                        if(this.x % 32 > 16){
+                            this.x += 32 - (this.x % 32)
+                        }
+                        else{
+                            this.x -= this.x % 32
+                        }
+                    }
                 });
             }
             else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.isMoving){            
@@ -76,6 +91,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
+                    if(this.y % 32 != 0){
+                        if(this.y % 32 > 16){
+                            this.y += 32 - (this.y % 32)
+                        }
+                        else{
+                            this.y -= this.y % 32
+                        }
+                    }
                 });
             }
             else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.isMoving){
@@ -84,6 +107,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                     this.isMoving = false;
                     this.setVelocity(0, 0);
+                    if(this.y % 32 != 0){
+                        if(this.y % 32 > 16){
+                            this.y += 32 - (this.y % 32)
+                        }
+                        else{
+                            this.y -= this.y % 32
+                        }
+                    }
                 });
             }
         }
