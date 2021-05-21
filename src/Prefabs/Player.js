@@ -17,7 +17,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     playerDeath () {
-
+        console.log('I am Dead!')
     }
     // I'll have to look a bit more into FSMs
     // setState() {
