@@ -84,10 +84,10 @@ class Play extends Phaser.Scene {
         // }); // Use to check if player is overlapping a wall
 
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
-        this.ptestdbgScrollCam(this.cameras.main, 1)
+        this.roomScroll(this.cameras.main, 1)
     }
 
-    ptestdbgScrollCam(cam, room){
+    roomScroll(cam, room){
         this.cameras.main.once('camerafaeoutcomplete', function(camera) {
             camera.fadeIn(6000, 255);
         }, this);
@@ -117,7 +117,7 @@ class Play extends Phaser.Scene {
         if(this.deathEnabled && (!this.cameras.main.worldView.contains(this.player.x + 1, this.player.y + 1 // + 1 prevents weird behavior
                                 || this.player.touching.wallLayer))) { // Boolean set to be always false. Replace with bad player location overlaps.
             this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y);
-            this.ptestdbgScrollCam(this.cameras.main, 1);
+            this.roomScroll(this.cameras.main, 1);
             this.roomNumber = 0;
         }
         // this.movingBlocks.update() ?
@@ -127,14 +127,14 @@ class Play extends Phaser.Scene {
             console.log("To Next Level");
             this.deathEnabled = false;
             if(this.roomNumber > tpLength - 2){
-                this.ptestdbgScrollCam(this.cameras.main, 7);
+                this.roomScroll(this.cameras.main, 7);
                 this.player.x = this.spawns[6].x;
                 this.player.y = this.spawns[6].y;
                 this.roomNumber = 6;
             }
             else{
                 this.roomNumber++;
-                this.ptestdbgScrollCam(this.cameras.main, this.roomNumber + 1);
+                this.roomScroll(this.cameras.main, this.roomNumber + 1);
                 this.player.x = this.spawns[this.roomNumber].x;
                 this.player.y = this.spawns[this.roomNumber].y;
             }
@@ -143,7 +143,7 @@ class Play extends Phaser.Scene {
         else if(this.player.isCollidedWith(this.p2Exit)){
             this.deathEnabled = false;
             this.sendToBottom();
-            this.ptestdbgScrollCam(this.cameras.main, this.roomNumber + 1);
+            this.roomScroll(this.cameras.main, this.roomNumber + 1);
             this.deathEnabled = true;
         }
     }
