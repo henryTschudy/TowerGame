@@ -34,6 +34,7 @@ class Play extends Phaser.Scene {
         this.r5Spawn = map.findObject('Objs', obj => obj.name === 'r5Spawn');
         this.r5Exit = map.findObject('Objs', obj => obj.name === 'r5Exit');
         this.p2Spawn = map.findObject('Objs', obj => obj.name === 'p2Spawn');
+        this.p2Exit = map.findObject('Objs', obj => obj.name === 'p2Exit');
 
         this.spawns = [this.p1Spawn, this.r1Spawn, this.r2Spawn, this.r3Spawn, this.r4Spawn, this.r5Spawn, this.p2Spawn];
         this.exits = [this.p1Exit, this.r1Exit, this.r2Exit, this.r3Exit, this.r4Exit, this.r5Exit];
@@ -128,6 +129,9 @@ class Play extends Phaser.Scene {
                 this.player.y = this.spawns[this.roomNumber].y;
             }
             this.time.delayedCall(500, () => this.deathEnabled = true);
+        }
+        else if(this.player.isCollidedWith(this.p2Exit)){
+            this.sendToBottom();
         }
     }
 }
