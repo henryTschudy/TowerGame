@@ -18,9 +18,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     playerDeath (x, y) {
         console.log('I am Dead!')
-        // this.x = x;
-        // this.y = y;
+        this.x = x;
+        this.y = y;
     }
+
+    // Pass an object with x and y member variables, returns whether player and the object are colliding
+    isCollidedWith(obj) {
+        return Math.abs(this.x - obj.x) <= this.width && Math.abs(this.y - obj.y) <= this.height;
+    }
+
     // I'll have to look a bit more into FSMs
     // setState() {
     // 

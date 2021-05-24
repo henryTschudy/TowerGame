@@ -18,7 +18,16 @@ class Play extends Phaser.Scene {
         const tileset = map.addTilesetImage('FinalTiles_-_Atlas', 'tiles');
         const tilelayer = map.createLayer('Tiles', tileset, 0, 0);
         const wallLayer = map.createLayer('Walls', tileset, 0, 0);
-        const p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn');
+        //const p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn') || { x: 32, y: 3968};
+        //TODO: Add const lvlExit to be read from JSON
+
+        /*
+            TODO: THE VARS BELOW ARE TEMPORARY, HAVE THEM BE READ BY JSON ABOVE
+        */
+        this.p1Spawn = { x: 288, y: 2912 };
+        this.lvlExit = { x: 512, y: 3040 };
+        this.wonLvl = false;
+
         this.deathEnabled = false;
 
         this.time.delayedCall(100, () => this.deathEnabled = true);
@@ -53,8 +62,16 @@ class Play extends Phaser.Scene {
 
         // Collision
         wallLayer.setCollisionByProperty({ collides: true });
-        this.physics.add.collider(this.player, wallLayer);
-        this.physics.add.overlap(this.player, tilelayer); // Use to check if player is overlapping a wall
+        tilelayer.setCollisionByProperty({ collides: true });
+        this.physics.add.collider(this.player, wallLayer, () => {
+            //TODO: what happens when player hits wall
+            console.log("Player hit wall");
+            this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y); 
+        });
+        // this.physics.add.overlap(this.player, wallLayer, () => {
+        //     console.log("Player hit wall");
+        //     this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y); 
+        // }); // Use to check if player is overlapping a wall
 
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
         this.ptestdbgScrollCam(this.cameras.main, 2)
@@ -65,15 +82,22 @@ class Play extends Phaser.Scene {
     }
 
     update(time, delta) {
-        this.player.update()
+        this.player.update();
 
         // If player is off camera && levelSwitch != true : Kill
         // Thanks to : https://phaser.discourse.group/t/what-is-incamera-in-phaser-3/7031
         // If player is overlapping bad tile : Kill
         // if(this.player.touching.???){ this.player.playerDeath }
-        if(!this.cameras.main.worldView.contains(this.player.x, this.player.y) && this.deathEnabled){ // Boolean set to be always false. Replace with bad player location overlaps.
-            this.player.playerDeath(/* Pass in spawn coordinates */);
+        if(!this.cameras.main.worldView.contains(this.player.x, this.player.y) && this.deathEnabled) { // Boolean set to be always false. Replace with bad player location overlaps.
+            music.stop();
+            this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y);
         }
         // this.movingBlocks.update() ?
+
+        if (this.player.isCollidedWith(this.lvlExit) && !this.wonLvl) {
+            //TODO: Go to next level
+            console.log("To Next Level");
+            this.wonLvl = true;
+        }
     }
 }
