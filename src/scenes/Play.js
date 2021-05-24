@@ -42,7 +42,7 @@ class Play extends Phaser.Scene {
 
         this.deathEnabled = false;
 
-        this.time.delayedCall(100, () => this.deathEnabled = true);
+        this.time.delayedCall(200, () => this.deathEnabled = true);
         // findObject is drunk :(
         // console.log(this.p1Spawn);
         // console.log(this.p1Spawn.x);
@@ -88,27 +88,37 @@ class Play extends Phaser.Scene {
     }
 
     ptestdbgScrollCam(cam, room){
+        this.cameras.main.once('camerafaeoutcomplete', function(camera) {
+            camera.fadeIn(6000, 255);
+        }, this);
         this.cameras.main.setScroll(0, (7 - room) * 576);
     }
 
     sendToBottom () {
-        ++tpLength;
+        if(tpLength < 6){
+            ++tpLength;
+        }
         this.roomNumber = 0;
         this.player.x = this.spawns[0].x;
         this.player.y = this.spawns[0].y;
     }
 
     update(time, delta) {
-        this.player.update();
-
         // If player is off camera && levelSwitch != true : Kill
         // Thanks to : https://phaser.discourse.group/t/what-is-incamera-in-phaser-3/7031
         // If player is overlapping bad tile : Kill
         // if(this.player.touching.???){ this.player.playerDeath }
-        if(!this.cameras.main.worldView.contains(this.player.x, this.player.y) && this.deathEnabled) { // Boolean set to be always false. Replace with bad player location overlaps.
-            this.music.stop();
+        if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x + 1, this.player.y + 1)) {
+            console.log('A winner is you!');
+        }
+        else{
+            this.player.update();
+        }
+        if(this.deathEnabled && (!this.cameras.main.worldView.contains(this.player.x + 1, this.player.y + 1 // + 1 prevents weird behavior
+                                || this.player.touching.wallLayer))) { // Boolean set to be always false. Replace with bad player location overlaps.
             this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y);
             this.ptestdbgScrollCam(this.cameras.main, 1);
+            this.roomNumber = 0;
         }
         // this.movingBlocks.update() ?
 
