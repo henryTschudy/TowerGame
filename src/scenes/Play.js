@@ -126,7 +126,7 @@ class Play extends Phaser.Scene {
             //TODO: Go to next level
             console.log("To Next Level");
             this.deathEnabled = false;
-            if(this.roomNumber > tpLength - 1){
+            if(this.roomNumber > tpLength - 2){
                 this.ptestdbgScrollCam(this.cameras.main, 7);
                 this.player.x = this.spawns[6].x;
                 this.player.y = this.spawns[6].y;
@@ -141,7 +141,10 @@ class Play extends Phaser.Scene {
             this.time.delayedCall(500, () => this.deathEnabled = true);
         }
         else if(this.player.isCollidedWith(this.p2Exit)){
+            this.deathEnabled = false;
             this.sendToBottom();
+            this.ptestdbgScrollCam(this.cameras.main, this.roomNumber + 1);
+            this.deathEnabled = true;
         }
     }
 }
