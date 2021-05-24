@@ -17,16 +17,27 @@ class Play extends Phaser.Scene {
         const map = this.add.tilemap('map');
         const tileset = map.addTilesetImage('FinalTiles_-_Atlas', 'tiles');
         const tilelayer = map.createLayer('Tiles', tileset, 0, 0);
+        const debrisLayer = map.createLayer('Debris', tileset, 0, 0);
         const wallLayer = map.createLayer('Walls', tileset, 0, 0);
-        //const p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn') || { x: 32, y: 3968};
-        //TODO: Add const lvlExit to be read from JSON
+        const objs = map.createLayer('Objs', tileset, 0, 0);
+        
+        this.p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn');
+        this.p1Exit = map.findObject('Objs', obj => obj.name === 'p1Exit');
+        this.r1Spawn = map.findObject('Objs', obj => obj.name === 'r1Spawn');
+        this.r1Exit = map.findObject('Objs', obj => obj.name === 'r1Exit');
+        this.r2Spawn = map.findObject('Objs', obj => obj.name === 'r2Spawn');
+        this.r2Exit = map.findObject('Objs', obj => obj.name === 'r2Exit');
+        this.r3Spawn = map.findObject('Objs', obj => obj.name === 'r3Spawn');
+        this.r3Exit = map.findObject('Objs', obj => obj.name === 'r3Exit');
+        this.r4Spawn = map.findObject('Objs', obj => obj.name === 'r4Spawn');
+        this.r4Exit = map.findObject('Objs', obj => obj.name === 'r4Exit');
+        this.r5Spawn = map.findObject('Objs', obj => obj.name === 'r5Spawn');
+        this.r5Exit = map.findObject('Objs', obj => obj.name === 'r5Exit');
+        this.p2Spawn = map.findObject('Objs', obj => obj.name === 'p2Spawn');
 
-        /*
-            TODO: THE VARS BELOW ARE TEMPORARY, HAVE THEM BE READ BY JSON ABOVE
-        */
-        this.p1Spawn = { x: 288, y: 2912 };
-        this.lvlExit = { x: 512, y: 3040 };
-        this.wonLvl = false;
+        this.spawns = [this.p1Spawn, this.r1Spawn, this.r2Spawn, this.r3Spawn, this.r4Spawn, this.r5Spawn, this.p2Spawn];
+        this.exits = [this.p1Exit, this.r1Exit, this.r2Exit, this.r3Exit, this.r4Exit, this.r5Exit];
+        this.roomNumber = 0;
 
         this.deathEnabled = false;
 
@@ -50,35 +61,40 @@ class Play extends Phaser.Scene {
         // this.phsyics.world.bounds.setTo(0, 0, map.widthInPixels, map.heightInPixels);
 
         // Add music
-        var music = this.sound.add('background');
-        music.setLoop(true);
-        music.play();
+        this.music = this.sound.add('background');
+        this.music.setLoop(true);
+        this.music.play();
 
         // Add in the player - NOTE : hardcoded items copied and pasted from js file because findObject ate too many crayons today and keeps saying p1Spawn is undef
         this.player = new Player(this, 288, 2912, 'player').setOrigin(0);
+        this.player.setSize(30,30);
         // this.player = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'player').setOrigin(0);
 
         // Add in the moving tiles
 
         // Collision
         wallLayer.setCollisionByProperty({ collides: true });
-        tilelayer.setCollisionByProperty({ collides: true });
-        this.physics.add.collider(this.player, wallLayer, () => {
-            //TODO: what happens when player hits wall
-            console.log("Player hit wall");
-            this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y); 
-        });
+        this.physics.add.collider(this.player, wallLayer);
+
+        // RESOLVE HOW THIS OVERLAP SHIT WORKS SO THAT OUR STUFF IS GOOD
         // this.physics.add.overlap(this.player, wallLayer, () => {
-        //     console.log("Player hit wall");
-        //     this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y); 
+        //     console.log("Player zooped into wall");
+        //     //this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y); 
         // }); // Use to check if player is overlapping a wall
 
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
-        this.ptestdbgScrollCam(this.cameras.main, 2)
+        this.ptestdbgScrollCam(this.cameras.main, 1)
     }
 
     ptestdbgScrollCam(cam, room){
         this.cameras.main.setScroll(0, (7 - room) * 576);
+    }
+
+    sendToBottom () {
+        ++tpLength;
+        this.roomNumber = 0;
+        this.player.x = this.spawns[0].x;
+        this.player.y = this.spawns[0].y;
     }
 
     update(time, delta) {
@@ -89,15 +105,29 @@ class Play extends Phaser.Scene {
         // If player is overlapping bad tile : Kill
         // if(this.player.touching.???){ this.player.playerDeath }
         if(!this.cameras.main.worldView.contains(this.player.x, this.player.y) && this.deathEnabled) { // Boolean set to be always false. Replace with bad player location overlaps.
-            music.stop();
+            this.music.stop();
             this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y);
+            this.ptestdbgScrollCam(this.cameras.main, 1);
         }
         // this.movingBlocks.update() ?
 
-        if (this.player.isCollidedWith(this.lvlExit) && !this.wonLvl) {
+        if (this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
             //TODO: Go to next level
             console.log("To Next Level");
-            this.wonLvl = true;
+            this.deathEnabled = false;
+            if(this.roomNumber > tpLength - 1){
+                this.ptestdbgScrollCam(this.cameras.main, 7);
+                this.player.x = this.spawns[6].x;
+                this.player.y = this.spawns[6].y;
+                this.roomNumber = 6;
+            }
+            else{
+                this.roomNumber++;
+                this.ptestdbgScrollCam(this.cameras.main, this.roomNumber + 1);
+                this.player.x = this.spawns[this.roomNumber].x;
+                this.player.y = this.spawns[this.roomNumber].y;
+            }
+            this.time.delayedCall(500, () => this.deathEnabled = true);
         }
     }
 }

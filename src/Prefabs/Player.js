@@ -12,10 +12,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.walkSpeed = 4;
     }
 
-    sendToBottom () {
-        ++tpLength;
-    }
-
     playerDeath (x, y) {
         console.log('I am Dead!')
         this.x = x;
@@ -40,23 +36,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (Phaser.Input.Keyboard.JustDown(keyA)){
                 // Emit TP particles where player is before tp here
                 this.x -= tileSize * tpLength;
-                // Emit TP particles where player is after tp here
-                //Added Player cannot collide with wall 
             }
             else if (Phaser.Input.Keyboard.JustDown(keyD)){
                 // Follow above particle stuff for the following
                 this.x += tileSize * tpLength;
-                 //Added Player cannot collide with wall 
             }
             else if (Phaser.Input.Keyboard.JustDown(keyW)){            
                 this.y -= tileSize * tpLength;
-                //this.angle = -90;
-                 //Added Player cannot collide with wall 
             }
             else if (Phaser.Input.Keyboard.JustDown(keyS)){
                 this.y += tileSize * tpLength;
-                //this.angle = 90;
-                 //Added Player cannot collide with wall 
             }
         }
         else{
