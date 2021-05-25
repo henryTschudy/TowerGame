@@ -9,7 +9,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isMoving = false;
         this.width = 32;
         this.height =32;
-        this.walkSpeed = 4;
+        this.walkSpeed = 16;
     }
 
     playerDeath (x, y) {
