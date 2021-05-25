@@ -9,7 +9,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isMoving = false;
         this.width = 32;
         this.height =32;
-        this.walkSpeed = 16;
+        this.walkSpeed = 8;
     }
 
     playerDeath (x, y) {
@@ -49,70 +49,78 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
         else{
-            if (Phaser.Input.Keyboard.JustDown(keyA) && !this.isMoving){
-                this.isMoving = true;
-                this.setVelocity(-tileSize * this.walkSpeed, 0);
-                // Something like this so that we move around in grid style
-                this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
-                    this.isMoving = false;
-                    this.setVelocity(0, 0);
-                    if(this.x % 32 != 0){
-                        if(this.x % 32 > 16){
-                            this.x += 32 - (this.x % 32)
+            if (keyA.isDown){
+                if(!this.isMoving){
+                    this.isMoving = true;
+                    this.setVelocity(-tileSize * this.walkSpeed, 0);
+                    // Something like this so that we move around in grid style
+                    this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
+                        this.isMoving = false;
+                        this.setVelocity(0, 0);
+                        if(this.x % 32 != 0){
+                            if(this.x % 32 > 16){
+                                this.x += 32 - (this.x % 32)
+                            }
+                            else{
+                                this.x -= this.x % 32
+                            }
                         }
-                        else{
-                            this.x -= this.x % 32
-                        }
-                    }
-                });
+                    });
+                }
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.isMoving){
-                this.isMoving = true;
-                this.setVelocity(tileSize * this.walkSpeed, 0);
-                this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
-                    this.isMoving = false;
-                    this.setVelocity(0, 0);
-                    if(this.x % 32 != 0){
-                        if(this.x % 32 > 16){
-                            this.x += 32 - (this.x % 32)
+            else if (keyD.isDown){
+                if (!this.isMoving) {
+                    this.isMoving = true;
+                    this.setVelocity(tileSize * this.walkSpeed, 0);
+                    this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
+                        this.isMoving = false;
+                        this.setVelocity(0, 0);
+                        if(this.x % 32 != 0){
+                            if(this.x % 32 > 16){
+                                this.x += 32 - (this.x % 32)
+                            }
+                            else{
+                                this.x -= this.x % 32
+                            }
                         }
-                        else{
-                            this.x -= this.x % 32
-                        }
-                    }
-                });
+                    });
+                }
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.isMoving){            
-                this.isMoving = true;
-                this.setVelocity(0, -tileSize * this.walkSpeed);
-                this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
-                    this.isMoving = false;
-                    this.setVelocity(0, 0);
-                    if(this.y % 32 != 0){
-                        if(this.y % 32 > 16){
-                            this.y += 32 - (this.y % 32)
+            else if (keyW.isDown){
+                while(!this.isMoving){
+                    this.isMoving = true;
+                    this.setVelocity(0, -tileSize * this.walkSpeed);
+                    this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
+                        this.isMoving = false;
+                        this.setVelocity(0, 0);
+                        if(this.y % 32 != 0){
+                            if(this.y % 32 > 16){
+                                this.y += 32 - (this.y % 32)
+                            }
+                            else{
+                                this.y -= this.y % 32
+                            }
                         }
-                        else{
-                            this.y -= this.y % 32
-                        }
-                    }
-                });
+                    });
+                }
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.isMoving){
-                this.isMoving = true;
-                this.setVelocity(0, tileSize * this.walkSpeed);
-                this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
-                    this.isMoving = false;
-                    this.setVelocity(0, 0);
-                    if(this.y % 32 != 0){
-                        if(this.y % 32 > 16){
-                            this.y += 32 - (this.y % 32)
+            else if (keyS.isDown){
+                while(!this.isMoving){
+                    this.isMoving = true;
+                    this.setVelocity(0, tileSize * this.walkSpeed);
+                    this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
+                        this.isMoving = false;
+                        this.setVelocity(0, 0);
+                        if(this.y % 32 != 0){
+                            if(this.y % 32 > 16){
+                                this.y += 32 - (this.y % 32)
+                            }
+                            else{
+                                this.y -= this.y % 32
+                            }
                         }
-                        else{
-                            this.y -= this.y % 32
-                        }
-                    }
-                });
+                    });
+                }
             }
         }
  
