@@ -12,6 +12,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.a = 'testingVariable';
         // Produce static map elements
         // Note: tileSize at 32. Variable allows up/down-scaling.
         const map = this.add.tilemap('map');
@@ -21,6 +22,9 @@ class Play extends Phaser.Scene {
         const wallLayer = map.createLayer('Walls', tileset, 0, 0);
         const objs = map.createLayer('Objs', tileset, 0, 0);
         
+        this.map = map;
+        this.wallLayer = wallLayer;
+
         this.p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn');
         this.p1Exit = map.findObject('Objs', obj => obj.name === 'p1Exit');
         this.r1Spawn = map.findObject('Objs', obj => obj.name === 'r1Spawn');
@@ -113,9 +117,9 @@ class Play extends Phaser.Scene {
         }
         else{
             this.player.update();
-        }
-        if(this.deathEnabled && (!this.cameras.main.worldView.contains(this.player.x + 1, this.player.y + 1 // + 1 prevents weird behavior
-                                || this.player.touching.wallLayer))) { // Boolean set to be always false. Replace with bad player location overlaps.
+        }        
+        if(this.deathEnabled && (!this.cameras.main.worldView.contains(this.player.x + 1, this.player.y + 1) // + 1 prevents weird behavior
+                                || this.map.getTileAtWorldXY(this.player.x, this.player.y, false, this.cameras.main, this.wallLayer) != null) ) { // Boolean set to be always false. Replace with bad player location overlaps.
             this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y);
             this.roomScroll(this.cameras.main, 1);
             this.roomNumber = 0;
