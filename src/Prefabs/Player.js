@@ -37,24 +37,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (Phaser.Input.Keyboard.JustDown(keyA)){
                 // Emit TP particles where player is before tp here
                 this.x -= tileSize * tpLength;
-                this.justTeleported = true;
-                this.scene.time.delayedCall(50, () => {this.justTeleported = false});
             }
             else if (Phaser.Input.Keyboard.JustDown(keyD)){
                 // Follow above particle stuff for the following
                 this.x += tileSize * tpLength;
-                this.justTeleported = true;
-                this.scene.time.delayedCall(50, () => {this.justTeleported = false});
             }
             else if (Phaser.Input.Keyboard.JustDown(keyW)){            
                 this.y -= tileSize * tpLength;
-                this.justTeleported = true;
-                this.scene.time.delayedCall(50, () => {this.justTeleported = false});
             }
             else if (Phaser.Input.Keyboard.JustDown(keyS)){
                 this.y += tileSize * tpLength;
-                this.justTeleported = true;
-                this.scene.time.delayedCall(50, () => {this.justTeleported = false});
             }
         }
         else{
