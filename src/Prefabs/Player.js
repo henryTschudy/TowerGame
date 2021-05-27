@@ -9,8 +9,78 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isMoving = false;
         this.width = 32;
         this.height =32;
-        this.walkSpeed = 8;
+        this.walkSpeed = 5;
         this.justTeleported;
+        this.animationFramerate = 5;
+
+        this.anims.create({
+            key: 'standForward',
+            frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standForward']}),
+            frameRate: this.animationFramerate,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'walkForward',
+            frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standForward', 'walkForward1', 'standForward', 'walkForward2']}),
+            frameRate: this.animationFramerate,
+            skipMissedFrames: false,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'standLeft',
+            frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standLeft']}),
+            frameRate: this.animationFramerate,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'walkLeft',
+            frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standLeft', 'walkLeft1', 'standLeft', 'walkLeft2']}),
+            frameRate: this.animationFramerate,
+            skipMissedFrames: false,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'standRight',
+            frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standRight']}),
+            frameRate: this.animationFramerate,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'walkRight',
+            frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standRight', 'walkRight1', 'standRight', 'walkRight2']}),
+            frameRate: this.animationFramerate,
+            skipMissedFrames: false,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'standBackward',
+            frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standBackward']}),
+            frameRate: this.animationFramerate,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'walkBackward',
+            frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standBackward', 'walkBackward1', 'standBackward', 'walkBackward2']}),
+            frameRate: this.animationFramerate,
+            skipMissedFrames: false,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'teleport',
+            frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standForward', 'teleport1', 'teleport2', 'teleport3', 'teleport4', 'teleport5']}),
+            duration: 1000,
+            skipMissedFrames: false,
+            repeat: -1
+        })
+
     }
 
     playerDeath (x, y) {
@@ -35,11 +105,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(keySHIFT.isDown){
             // Emit particles to tell the player theyre in teleport mode
             if (Phaser.Input.Keyboard.JustDown(keyA)){
-                // Emit TP particles where player is before tp here
                 this.x -= tileSize * tpLength;
             }
             else if (Phaser.Input.Keyboard.JustDown(keyD)){
-                // Follow above particle stuff for the following
                 this.x += tileSize * tpLength;
             }
             else if (Phaser.Input.Keyboard.JustDown(keyW)){            
@@ -51,10 +119,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         else{
             if (keyA.isDown){
+                this.anims.play('walkLeft', true);
                 if(!this.isMoving){
                     this.isMoving = true;
                     this.setVelocity(-tileSize * this.walkSpeed, 0);
-                    // Something like this so that we move around in grid style
                     this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                         this.isMoving = false;
                         this.setVelocity(0, 0);
@@ -70,6 +138,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             }
             else if (keyD.isDown){
+                this.anims.play('walkRight', true);
                 if (!this.isMoving) {
                     this.isMoving = true;
                     this.setVelocity(tileSize * this.walkSpeed, 0);
@@ -88,6 +157,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             }
             else if (keyW.isDown){
+                this.anims.play('walkBackward', true);
                 while(!this.isMoving){
                     this.isMoving = true;
                     this.setVelocity(0, -tileSize * this.walkSpeed);
@@ -106,6 +176,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             }
             else if (keyS.isDown){
+                this.anims.play('walkForward', true);
                 while(!this.isMoving){
                     this.isMoving = true;
                     this.setVelocity(0, tileSize * this.walkSpeed);
@@ -123,8 +194,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     });
                 }
             }
+            else{
+                this.anims.restart();
+                this.anims.stop(null, true);
+            }
         }
- 
-        // Collision logic handled in Play.js
     }
 }

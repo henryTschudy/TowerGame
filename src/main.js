@@ -8,6 +8,10 @@ let config = {
     pixelArt: true, // Helps prevent tile bleeing
     width: gameSize,
     height: gameSize,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     physics: {
         default: 'arcade',
         arcade: {
