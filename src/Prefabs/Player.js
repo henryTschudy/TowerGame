@@ -12,6 +12,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.walkSpeed = 5;
         this.justTeleported;
         this.animationFramerate = 5;
+        this.controlLock = false;
 
         this.anims.create({
             key: 'standForward',
@@ -76,9 +77,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.create({
             key: 'teleport',
             frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standForward', 'teleport1', 'teleport2', 'teleport3', 'teleport4', 'teleport5']}),
-            duration: 1000,
+            frameRate: this.animationFramerate*2,
             skipMissedFrames: false,
-            repeat: -1
+            repeat: 0
         })
 
     }
@@ -103,22 +104,45 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // if keySHIFT and not walking -> teleport logic
         // Something like this, src : https://phaser.io/examples/v3/view/game-objects/lights/tilemap-layer
         if(keySHIFT.isDown){
-            // Emit particles to tell the player theyre in teleport mode
-            if (Phaser.Input.Keyboard.JustDown(keyA)){
-                this.x -= tileSize * tpLength;
+            if (Phaser.Input.Keyboard.JustDown(keyA) && this.controlLock == false){
+                this.controlLock = true;
+                this.anims.play('teleport', false);
+                this.scene.time.delayedCall(750, () => {
+                    this.x -= tileSize * tpLength;
+                    this.anims.playReverse('teleport', false);
+                    this.controlLock = false;
+                });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyD)){
-                this.x += tileSize * tpLength;
+            else if (Phaser.Input.Keyboard.JustDown(keyD) && this.controlLock == false){
+                this.controlLock = true;
+                this.anims.play('teleport', false);
+                this.scene.time.delayedCall(750, () => {
+                    this.x += tileSize * tpLength;
+                    this.anims.playReverse('teleport', false);
+                    this.controlLock = false;
+                });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyW)){            
-                this.y -= tileSize * tpLength;
+            else if (Phaser.Input.Keyboard.JustDown(keyW) && this.controlLock == false){            
+                this.controlLock = true;
+                this.anims.play('teleport', false);
+                this.scene.time.delayedCall(750, () => {
+                    this.y -= tileSize * tpLength;
+                    this.anims.playReverse('teleport', false);
+                    this.controlLock = false;
+                });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyS)){
-                this.y += tileSize * tpLength;
+            else if (Phaser.Input.Keyboard.JustDown(keyS) && this.controlLock == false){
+                this.controlLock = true;
+                this.anims.play('teleport', false);
+                this.scene.time.delayedCall(750, () => {
+                    this.y += tileSize * tpLength;
+                    this.anims.playReverse('teleport', false);
+                    this.controlLock = false;
+                });
             }
         }
         else{
-            if (keyA.isDown){
+            if (keyA.isDown && this.controlLock == false){
                 this.anims.play('walkLeft', true);
                 if(!this.isMoving){
                     this.isMoving = true;
@@ -137,7 +161,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     });
                 }
             }
-            else if (keyD.isDown){
+            else if (keyD.isDown && this.controlLock == false){
                 this.anims.play('walkRight', true);
                 if (!this.isMoving) {
                     this.isMoving = true;
@@ -156,7 +180,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     });
                 }
             }
-            else if (keyW.isDown){
+            else if (keyW.isDown && this.controlLock == false){
                 this.anims.play('walkBackward', true);
                 while(!this.isMoving){
                     this.isMoving = true;
@@ -175,7 +199,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     });
                 }
             }
-            else if (keyS.isDown){
+            else if (keyS.isDown && this.controlLock == false){
                 this.anims.play('walkForward', true);
                 while(!this.isMoving){
                     this.isMoving = true;

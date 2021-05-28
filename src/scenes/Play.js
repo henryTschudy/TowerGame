@@ -12,7 +12,6 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.a = 'testingVariable';
         // Produce static map elements
         // Note: tileSize at 32. Variable allows up/down-scaling.
         const map = this.add.tilemap('map');
