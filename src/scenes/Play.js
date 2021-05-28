@@ -57,6 +57,7 @@ class Play extends Phaser.Scene {
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         
         // Set world and camera bounds.
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -69,10 +70,9 @@ class Play extends Phaser.Scene {
         this.music.setLoop(true);
         this.music.play();
 
-        // Add in the player - NOTE : hardcoded items copied and pasted from js file because findObject ate too many crayons today and keeps saying p1Spawn is undef
-        this.player = new Player(this, 288, 2912, 'player').setOrigin(0);
+        // Add in the player
+        this.player = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'player').setOrigin(0);
         this.player.setSize(30,30);
-        // this.player = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'player').setOrigin(0);
 
         // Add in the moving tiles
 

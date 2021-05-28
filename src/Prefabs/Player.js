@@ -143,9 +143,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         else{
             if (keyA.isDown && this.controlLock == false){
-                this.anims.play('walkLeft', true);
                 if(!this.isMoving){
                     this.isMoving = true;
+                    this.anims.play('walkLeft', true);
                     this.setVelocity(-tileSize * this.walkSpeed, 0);
                     this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                         this.isMoving = false;
@@ -162,9 +162,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             }
             else if (keyD.isDown && this.controlLock == false){
-                this.anims.play('walkRight', true);
                 if (!this.isMoving) {
                     this.isMoving = true;
+                    this.anims.play('walkRight', true);
                     this.setVelocity(tileSize * this.walkSpeed, 0);
                     this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                         this.isMoving = false;
@@ -181,9 +181,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             }
             else if (keyW.isDown && this.controlLock == false){
-                this.anims.play('walkBackward', true);
                 while(!this.isMoving){
                     this.isMoving = true;
+                    this.anims.play('walkBackward', true);
                     this.setVelocity(0, -tileSize * this.walkSpeed);
                     this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                         this.isMoving = false;
@@ -200,9 +200,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             }
             else if (keyS.isDown && this.controlLock == false){
-                this.anims.play('walkForward', true);
                 while(!this.isMoving){
                     this.isMoving = true;
+                    this.anims.play('walkForward', true);
                     this.setVelocity(0, tileSize * this.walkSpeed);
                     this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
                         this.isMoving = false;
