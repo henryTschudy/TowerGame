@@ -100,7 +100,12 @@ class Play extends Phaser.Scene {
     }
 
     sendToBottom(duration) {
-        this.player.powerUp(duration);
+        this.cameras.main.shake(3000, 0.01);
+        this.player.body.setVelocityY(-10);
+        this.time.delayedCall(duration-500, () => {
+            this.player.body.setVelocityY(0);
+            this.player.anims.play('teleport', false);
+        });
         this.time.delayedCall(duration, () => {
             this.roomNumber = 0;
             this.player.x = this.spawns[0].x;

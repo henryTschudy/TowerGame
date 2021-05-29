@@ -118,18 +118,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene.time.delayedCall(600, () => {this.controlLock = false});
     }
 
-    powerUp(duration){
-        console.log("Powering up!!")
-        this.controlLock = true;
-        this.body.setVelocityY(-10);
-        this.scene.time.delayedCall(duration-1000, () => {
-            this.anims.play('teleport', false);
-            this.scene.time.delayedCall(1000, () => {
-                this.body.setVelocityY(0);
-            });
-        });
-    }
-
     collisionCheck(isTeleporting){
         if(this.scene.deathEnabled && ((!this.scene.cameras.main.worldView.contains(this.x, this.y)
                                 || this.scene.map.getTileAtWorldXY(this.x+8, this.y+8, false, this.scene.cameras.main, this.scene.wallLayer) != null) )) {
@@ -140,7 +128,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.roomScroll(this.scene.cameras.main, 1);
                 this.scene.roomNumber = 0;
             });
-        } else if(isTeleporting) {
+        } else if(this.scene.deathEnabled && this.isCollidedWith(this.scene.p2Exit)){
+            this.anims.playReverse('teleport', false);
+        }
+        else if(isTeleporting) {
             this.controlLock = true;
             this.exitTeleport();
         }
