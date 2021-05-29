@@ -122,7 +122,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     collisionCheck(isTeleporting = false){
         if(this.scene.deathEnabled && ((!this.scene.cameras.main.worldView.contains(this.x, this.y)
-                                || this.scene.map.getTileAtWorldXY(this.x, this.y, false, this.scene.cameras.main, this.scene.wallLayer) != null) )) {
+                                || this.scene.map.getTileAtWorldXY(this.x+8, this.y+8, false, this.scene.cameras.main, this.scene.wallLayer) != null))) {
             this.scene.deathEnabled = false;
             this.controlLock = true;
             this.playerDeath(this.scene.p1Spawn.x, this.scene.p1Spawn.y);

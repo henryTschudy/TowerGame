@@ -1,5 +1,5 @@
 const tileSize = 32;
-const mapWidth = 17; // Number of tiles across map
+const mapWidth = 18; // Number of tiles across map
 const mapHeight = 19;
 const roomWidth = tileSize * mapWidth;
 const roomHeight = tileSize * mapHeight;

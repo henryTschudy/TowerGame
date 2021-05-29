@@ -59,6 +59,7 @@ class Play extends Phaser.Scene {
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         
         // Set world and camera bounds.
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -104,6 +105,7 @@ class Play extends Phaser.Scene {
     }
 
     sendToBottom(duration) {
+        this.player.controlLock = true;
         this.cameras.main.shake(3000, 0.01);
         this.player.body.setVelocityY(-10);
         this.time.delayedCall(duration-500, () => {
@@ -133,10 +135,8 @@ class Play extends Phaser.Scene {
             else{
                 this.player.update();
             }           
-            
-            // this.movingBlocks.update() ?
             if (!this.player.collisionOff){
-                if (this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
+                if (keySPACE.isDown && this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
                     //TODO: Go to next level
                     console.log("To Next Level");
                     this.deathEnabled = false;
