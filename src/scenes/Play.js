@@ -44,6 +44,7 @@ class Play extends Phaser.Scene {
         this.roomNumber = 0;
 
         this.deathEnabled = false;
+        this.transitioning = false;
 
         this.time.delayedCall(200, () => this.deathEnabled = true);
         // findObject is drunk :(
@@ -86,17 +87,20 @@ class Play extends Phaser.Scene {
         //     //this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y); 
         // }); // Use to check if player is overlapping a wall
 
-        this.cameras.main.fadeIn();
 
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
-        this.roomScroll(this.cameras.main, 1)
+        this.cameras.main.setScroll(0, (6) * 576);
+        this.cameras.main.fadeIn(1000);
     }
 
     roomScroll(cam, room){
-        cam.once('camerafadeoutcomplete', function(camera) {
-            camera.fadeIn(6000, 255);
-        }, this);
-        cam.setScroll(0, (7 - room) * 576);
+        this.transitioning = true;
+        cam.fadeOut(500);
+        this.time.delayedCall(500, () => {
+            cam.setScroll(0, (7 - room) * 576);
+            cam.fadeIn(500)
+            this.time.delayedCall(100, () => this.transitioning = false);
+        });
     }
 
     sendToBottom(duration) {
@@ -122,39 +126,41 @@ class Play extends Phaser.Scene {
         // Thanks to : https://phaser.discourse.group/t/what-is-incamera-in-phaser-3/7031
         // If player is overlapping bad tile : Kill
         // if(this.player.touching.???){ this.player.playerDeath }
-        if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x, this.player.y)) {
-            console.log('A winner is you!');
-        }
-        else{
-            this.player.update();
-        }           
-        
-        // this.movingBlocks.update() ?
-
-        if (this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
-            //TODO: Go to next level
-            console.log("To Next Level");
-            this.deathEnabled = false;
-            if(this.roomNumber > tpLength - 2){
-                this.roomScroll(this.cameras.main, 7);
-                this.player.x = this.spawns[6].x;
-                this.player.y = this.spawns[6].y;
-                this.roomNumber = 6;
+        if (!this.transitioning){
+            if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x, this.player.y)) {
+                console.log('A winner is you!');
             }
             else{
-                this.roomNumber++;
-                this.roomScroll(this.cameras.main, this.roomNumber + 1);
-                this.player.x = this.spawns[this.roomNumber].x;
-                this.player.y = this.spawns[this.roomNumber].y;
+                this.player.update();
+            }           
+            
+            // this.movingBlocks.update() ?
+
+            if (this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
+                //TODO: Go to next level
+                console.log("To Next Level");
+                this.deathEnabled = false;
+                if(this.roomNumber > tpLength - 2){
+                    this.roomScroll(this.cameras.main, 7);
+                    this.player.x = this.spawns[6].x;
+                    this.player.y = this.spawns[6].y;
+                    this.roomNumber = 6;
+                }
+                else{
+                    this.roomNumber++;
+                    this.roomScroll(this.cameras.main, this.roomNumber + 1);
+                    this.player.x = this.spawns[this.roomNumber].x;
+                    this.player.y = this.spawns[this.roomNumber].y;
+                }
+                this.time.delayedCall(500, () => this.deathEnabled = true);
             }
-            this.time.delayedCall(500, () => this.deathEnabled = true);
-        }
-        else if(this.deathEnabled && this.player.isCollidedWith(this.p2Exit)){
-            this.deathEnabled = false;
-            this.sendToBottom(3000);
-            this.time.delayedCall(3000, () => {
-                this.roomScroll(this.cameras.main, this.roomNumber + 1);
-            });
+            else if(this.deathEnabled && this.player.isCollidedWith(this.p2Exit)){
+                this.deathEnabled = false;
+                this.sendToBottom(3000);
+                this.time.delayedCall(3000, () => {
+                    this.roomScroll(this.cameras.main, this.roomNumber + 1);
+                });
+            }
         }
     }
 }

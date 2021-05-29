@@ -99,8 +99,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             console.log('I am Dead!')
             this.x = x;
             this.y = y;
-            this.anims.playReverse('teleport', false);
-            this.scene.time.delayedCall(600, () => {this.controlLock = false});
+            this.scene.time.delayedCall(500, () => {
+                this.anims.playReverse('teleport', false);
+                this.scene.time.delayedCall(600, () => {this.controlLock = false});
+            })
         });
     }
 
@@ -118,7 +120,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene.time.delayedCall(600, () => {this.controlLock = false});
     }
 
-    collisionCheck(isTeleporting){
+    collisionCheck(isTeleporting = false){
         if(this.scene.deathEnabled && ((!this.scene.cameras.main.worldView.contains(this.x, this.y)
                                 || this.scene.map.getTileAtWorldXY(this.x+8, this.y+8, false, this.scene.cameras.main, this.scene.wallLayer) != null) )) {
             this.scene.deathEnabled = false;
