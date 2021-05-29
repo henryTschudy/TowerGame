@@ -89,7 +89,7 @@ class Play extends Phaser.Scene {
 
 
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
-        this.cameras.main.setScroll(0, (6) * roomSize);
+        this.cameras.main.setScroll(0, (6) * roomHeight);
         this.cameras.main.fadeIn(1000);
     }
 
@@ -97,7 +97,7 @@ class Play extends Phaser.Scene {
         this.transitioning = true;
         cam.fadeOut(500);
         this.time.delayedCall(500, () => {
-            cam.setScroll(0, (7 - room) * roomSize);
+            cam.setScroll(0, (7 - room) * roomHeight);
             cam.fadeIn(500)
             this.time.delayedCall(100, () => this.transitioning = false);
         });
@@ -135,31 +135,32 @@ class Play extends Phaser.Scene {
             }           
             
             // this.movingBlocks.update() ?
-
-            if (this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
-                //TODO: Go to next level
-                console.log("To Next Level");
-                this.deathEnabled = false;
-                if(this.roomNumber > tpLength - 2){
-                    this.roomScroll(this.cameras.main, 7);
-                    this.player.x = this.spawns[6].x;
-                    this.player.y = this.spawns[6].y;
-                    this.roomNumber = 6;
+            if (!this.player.collisionOff){
+                if (this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
+                    //TODO: Go to next level
+                    console.log("To Next Level");
+                    this.deathEnabled = false;
+                    if(this.roomNumber > tpLength - 2){
+                        this.roomScroll(this.cameras.main, 7);
+                        this.player.x = this.spawns[6].x;
+                        this.player.y = this.spawns[6].y;
+                        this.roomNumber = 6;
+                    }
+                    else{
+                        this.roomNumber++;
+                        this.roomScroll(this.cameras.main, this.roomNumber + 1);
+                        this.player.x = this.spawns[this.roomNumber].x;
+                        this.player.y = this.spawns[this.roomNumber].y;
+                    }
+                    this.time.delayedCall(500, () => this.deathEnabled = true);
                 }
-                else{
-                    this.roomNumber++;
-                    this.roomScroll(this.cameras.main, this.roomNumber + 1);
-                    this.player.x = this.spawns[this.roomNumber].x;
-                    this.player.y = this.spawns[this.roomNumber].y;
+                else if(this.deathEnabled && this.player.isCollidedWith(this.p2Exit)){
+                    this.deathEnabled = false;
+                    this.sendToBottom(3000);
+                    this.time.delayedCall(3000, () => {
+                        this.roomScroll(this.cameras.main, this.roomNumber + 1);
+                    });
                 }
-                this.time.delayedCall(500, () => this.deathEnabled = true);
-            }
-            else if(this.deathEnabled && this.player.isCollidedWith(this.p2Exit)){
-                this.deathEnabled = false;
-                this.sendToBottom(3000);
-                this.time.delayedCall(3000, () => {
-                    this.roomScroll(this.cameras.main, this.roomNumber + 1);
-                });
             }
         }
     }

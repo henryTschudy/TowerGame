@@ -13,6 +13,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.failedTeleport = false;
         this.animationFramerate = 5;
         this.controlLock = false;
+        this.collisionOff = false;
 
         this.anims.create({
             key: 'standForward',
@@ -112,7 +113,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     exitTeleport(){
-        console.log("exiting...")
         this.anims.playReverse('teleport', false);
         if (!this.scene.deathEnabled){
             this.scene.time.delayedCall(600, () => {this.scene.deathEnabled = true});
@@ -122,7 +122,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     collisionCheck(isTeleporting = false){
         if(this.scene.deathEnabled && ((!this.scene.cameras.main.worldView.contains(this.x, this.y)
-                                || this.scene.map.getTileAtWorldXY(this.x+8, this.y+8, false, this.scene.cameras.main, this.scene.wallLayer) != null) )) {
+                                || this.scene.map.getTileAtWorldXY(this.x, this.y, false, this.scene.cameras.main, this.scene.wallLayer) != null) )) {
             this.scene.deathEnabled = false;
             this.controlLock = true;
             this.playerDeath(this.scene.p1Spawn.x, this.scene.p1Spawn.y);
@@ -153,33 +153,41 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(keySHIFT.isDown && !this.controlLock){
             if (Phaser.Input.Keyboard.JustDown(keyA) && !this.controlLock){
                 this.controlLock = true;
+                this.collisionOff = true;
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.x -= tileSize * tpLength;
+                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }
             else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.controlLock){
                 this.controlLock = true;
+                this.collisionOff = true;
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.x += tileSize * tpLength;
+                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }
             else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.controlLock){            
                 this.controlLock = true;
+                this.collisionOff = true;
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.y -= tileSize * tpLength;
+                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }
             else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.controlLock){
                 this.controlLock = true;
+                this.collisionOff = true;
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.y += tileSize * tpLength;
+                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }

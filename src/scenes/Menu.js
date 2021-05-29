@@ -10,7 +10,7 @@ class Menu extends Phaser.Scene {
 
     create() {
         this.add.image(0, 0, 'splash');
-        this.cameras.main.setBounds(0, 0, gameSize, gameSize)
+        this.cameras.main.setBounds(0, 0, roomWidth, roomHeight)
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {

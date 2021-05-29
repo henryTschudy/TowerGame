@@ -1,14 +1,15 @@
 const tileSize = 32;
-const mapWidth = 19; // Number of tiles across map
-const roomSize = tileSize * mapWidth;
-const gameSize = tileSize * mapWidth;
+const mapWidth = 17; // Number of tiles across map
+const mapHeight = 19;
+const roomWidth = tileSize * mapWidth;
+const roomHeight = tileSize * mapHeight;
 let tpLength = 2;
 
 let config = {
     type: Phaser.CANVAS, // Changed from WebGL
     pixelArt: true, // Helps prevent tile bleeing
-    width: gameSize,
-    height: gameSize,
+    width: roomWidth,
+    height: roomHeight,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
