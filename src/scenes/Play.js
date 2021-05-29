@@ -93,38 +93,37 @@ class Play extends Phaser.Scene {
     }
 
     roomScroll(cam, room){
-        this.cameras.main.once('camerafaeoutcomplete', function(camera) {
+        cam.once('camerafadeoutcomplete', function(camera) {
             camera.fadeIn(6000, 255);
         }, this);
-        this.cameras.main.setScroll(0, (7 - room) * 576);
+        cam.setScroll(0, (7 - room) * 576);
     }
 
-    sendToBottom () {
-        if(tpLength < 6){
-            ++tpLength;
-        }
-        this.roomNumber = 0;
-        this.player.x = this.spawns[0].x;
-        this.player.y = this.spawns[0].y;
+    sendToBottom(duration) {
+        this.player.powerUp(duration);
+        this.time.delayedCall(duration, () => {
+            this.roomNumber = 0;
+            this.player.x = this.spawns[0].x;
+            this.player.y = this.spawns[0].y;
+            this.player.exitTeleport();
+            if(tpLength < 6){
+                ++tpLength;
+            }
+        });
     }
 
-    update(time, delta) {
+    update() {
         // If player is off camera && levelSwitch != true : Kill
         // Thanks to : https://phaser.discourse.group/t/what-is-incamera-in-phaser-3/7031
         // If player is overlapping bad tile : Kill
         // if(this.player.touching.???){ this.player.playerDeath }
-        if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x + 1, this.player.y + 1)) {
+        if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x, this.player.y)) {
             console.log('A winner is you!');
         }
         else{
             this.player.update();
-        }        
-        if(this.deathEnabled && (!this.cameras.main.worldView.contains(this.player.x + 1, this.player.y + 1) // + 1 prevents weird behavior
-                                || this.map.getTileAtWorldXY(this.player.x, this.player.y, false, this.cameras.main, this.wallLayer) != null) ) { // Boolean set to be always false. Replace with bad player location overlaps.
-            this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y);
-            this.roomScroll(this.cameras.main, 1);
-            this.roomNumber = 0;
-        }
+        }           
+        
         // this.movingBlocks.update() ?
 
         if (this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
@@ -145,11 +144,12 @@ class Play extends Phaser.Scene {
             }
             this.time.delayedCall(500, () => this.deathEnabled = true);
         }
-        else if(this.player.isCollidedWith(this.p2Exit)){
+        else if(this.deathEnabled && this.player.isCollidedWith(this.p2Exit)){
             this.deathEnabled = false;
-            this.sendToBottom();
-            this.roomScroll(this.cameras.main, this.roomNumber + 1);
-            this.deathEnabled = true;
+            this.sendToBottom(3000);
+            this.time.delayedCall(3000, () => {
+                this.roomScroll(this.cameras.main, this.roomNumber + 1);
+            });
         }
     }
 }

@@ -10,7 +10,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.width = 32;
         this.height =32;
         this.walkSpeed = 5;
-        this.justTeleported;
+        this.failedTeleport = false;
         this.animationFramerate = 5;
         this.controlLock = false;
 
@@ -82,17 +82,68 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             repeat: 0
         })
 
+        this.anims.create({
+            key: 'death',
+            frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['death1', 'death2', 'death3', 'death4', 'death5', 'death6', 'death7', 'death8', 'teleport5']}),
+            frameRate: this.animationFramerate*2,
+            skipMissedFrames: false,
+            repeat: 0
+        })
+
     }
 
     playerDeath (x, y) {
-        console.log('I am Dead!')
-        this.x = x;
-        this.y = y;
+        this.controlLock = true;
+        this.anims.play('death', false);
+        this.scene.time.delayedCall(1000, () => {
+            console.log('I am Dead!')
+            this.x = x;
+            this.y = y;
+            this.anims.playReverse('teleport', false);
+            this.scene.time.delayedCall(600, () => {this.controlLock = false});
+        });
     }
 
     // Pass an object with x and y member variables, returns whether player and the object are colliding
     isCollidedWith(obj) {
         return Math.abs(this.x - obj.x) <= this.width && Math.abs(this.y - obj.y) <= this.height;
+    }
+
+    exitTeleport(){
+        console.log("exiting...")
+        this.anims.playReverse('teleport', false);
+        if (!this.scene.deathEnabled){
+            this.scene.time.delayedCall(600, () => {this.scene.deathEnabled = true});
+        }
+        this.scene.time.delayedCall(600, () => {this.controlLock = false});
+    }
+
+    powerUp(duration){
+        console.log("Powering up!!")
+        this.controlLock = true;
+        this.body.setVelocityY(-10);
+        this.scene.time.delayedCall(duration-1000, () => {
+            this.anims.play('teleport', false);
+            this.scene.time.delayedCall(1000, () => {
+                this.body.setVelocityY(0);
+            });
+        });
+    }
+
+    collisionCheck(isTeleporting){
+        if(this.scene.deathEnabled && ((!this.scene.cameras.main.worldView.contains(this.x, this.y)
+                                || this.scene.map.getTileAtWorldXY(this.x+8, this.y+8, false, this.scene.cameras.main, this.scene.wallLayer) != null) )) {
+            this.scene.deathEnabled = false;
+            this.controlLock = true;
+            this.playerDeath(this.scene.p1Spawn.x, this.scene.p1Spawn.y);
+            this.scene.time.delayedCall(1000, () => {
+                this.scene.roomScroll(this.scene.cameras.main, 1);
+                this.scene.roomNumber = 0;
+            });
+        } else if(isTeleporting) {
+            this.controlLock = true;
+            this.exitTeleport();
+        }
     }
 
     // I'll have to look a bit more into FSMs
@@ -101,48 +152,47 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // }
     // Give me a heads up if you want the time, delta part
     update() {
+
+        this.collisionCheck();
+
         // if keySHIFT and not walking -> teleport logic
         // Something like this, src : https://phaser.io/examples/v3/view/game-objects/lights/tilemap-layer
-        if(keySHIFT.isDown && this.controlLock == false){
-            if (Phaser.Input.Keyboard.JustDown(keyA) && this.controlLock == false){
+        if(keySHIFT.isDown && !this.controlLock){
+            if (Phaser.Input.Keyboard.JustDown(keyA) && !this.controlLock){
                 this.controlLock = true;
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.x -= tileSize * tpLength;
-                    this.anims.playReverse('teleport', false);
-                    this.scene.time.delayedCall(600, () => {this.controlLock = false});
+                    this.collisionCheck(true);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyD) && this.controlLock == false){
+            else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.controlLock){
                 this.controlLock = true;
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.x += tileSize * tpLength;
-                    this.anims.playReverse('teleport', false);
-                    this.scene.time.delayedCall(600, () => {this.controlLock = false});
+                    this.collisionCheck(true);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyW) && this.controlLock == false){            
+            else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.controlLock){            
                 this.controlLock = true;
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.y -= tileSize * tpLength;
-                    this.anims.playReverse('teleport', false);
-                    this.scene.time.delayedCall(600, () => {this.controlLock = false});
+                    this.collisionCheck(true);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyS) && this.controlLock == false){
+            else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.controlLock){
                 this.controlLock = true;
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.y += tileSize * tpLength;
-                    this.anims.playReverse('teleport', false);
-                    this.scene.time.delayedCall(600, () => {this.controlLock = false});
+                    this.collisionCheck(true);
                 });
             }
         }
         else{
-            if (keyA.isDown && this.controlLock == false){
+            if (keyA.isDown && !this.controlLock){
                 if(!this.isMoving){
                     this.isMoving = true;
                     this.anims.play('walkLeft', true);
@@ -161,7 +211,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     });
                 }
             }
-            else if (keyD.isDown && this.controlLock == false){
+            else if (keyD.isDown && !this.controlLock){
                 if (!this.isMoving) {
                     this.isMoving = true;
                     this.anims.play('walkRight', true);
@@ -180,7 +230,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     });
                 }
             }
-            else if (keyW.isDown && this.controlLock == false){
+            else if (keyW.isDown && !this.controlLock){
                 while(!this.isMoving){
                     this.isMoving = true;
                     this.anims.play('walkBackward', true);
@@ -199,7 +249,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     });
                 }
             }
-            else if (keyS.isDown && this.controlLock == false){
+            else if (keyS.isDown && !this.controlLock){
                 while(!this.isMoving){
                     this.isMoving = true;
                     this.anims.play('walkForward', true);
@@ -218,7 +268,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     });
                 }
             }
-            else if (this.controlLock == false){
+            else if (!this.controlLock){
                 this.anims.restart();
                 this.anims.stop(null, true);
             }
