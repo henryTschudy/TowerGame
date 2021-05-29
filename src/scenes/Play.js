@@ -89,7 +89,7 @@ class Play extends Phaser.Scene {
 
 
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
-        this.cameras.main.setScroll(0, (6) * 576);
+        this.cameras.main.setScroll(0, (6) * roomSize);
         this.cameras.main.fadeIn(1000);
     }
 
@@ -97,7 +97,7 @@ class Play extends Phaser.Scene {
         this.transitioning = true;
         cam.fadeOut(500);
         this.time.delayedCall(500, () => {
-            cam.setScroll(0, (7 - room) * 576);
+            cam.setScroll(0, (7 - room) * roomSize);
             cam.fadeIn(500)
             this.time.delayedCall(100, () => this.transitioning = false);
         });

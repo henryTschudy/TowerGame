@@ -1,5 +1,6 @@
 const tileSize = 32;
-const mapWidth = 18; // Number of tiles across map
+const mapWidth = 19; // Number of tiles across map
+const roomSize = tileSize * mapWidth;
 const gameSize = tileSize * mapWidth;
 let tpLength = 2;
 
