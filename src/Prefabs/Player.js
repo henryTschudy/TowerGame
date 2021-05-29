@@ -103,14 +103,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     update() {
         // if keySHIFT and not walking -> teleport logic
         // Something like this, src : https://phaser.io/examples/v3/view/game-objects/lights/tilemap-layer
-        if(keySHIFT.isDown){
+        if(keySHIFT.isDown && this.controlLock == false){
             if (Phaser.Input.Keyboard.JustDown(keyA) && this.controlLock == false){
                 this.controlLock = true;
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.x -= tileSize * tpLength;
                     this.anims.playReverse('teleport', false);
-                    this.controlLock = false;
+                    this.scene.time.delayedCall(600, () => {this.controlLock = false});
                 });
             }
             else if (Phaser.Input.Keyboard.JustDown(keyD) && this.controlLock == false){
@@ -119,7 +119,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.time.delayedCall(750, () => {
                     this.x += tileSize * tpLength;
                     this.anims.playReverse('teleport', false);
-                    this.controlLock = false;
+                    this.scene.time.delayedCall(600, () => {this.controlLock = false});
                 });
             }
             else if (Phaser.Input.Keyboard.JustDown(keyW) && this.controlLock == false){            
@@ -128,7 +128,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.time.delayedCall(750, () => {
                     this.y -= tileSize * tpLength;
                     this.anims.playReverse('teleport', false);
-                    this.controlLock = false;
+                    this.scene.time.delayedCall(600, () => {this.controlLock = false});
                 });
             }
             else if (Phaser.Input.Keyboard.JustDown(keyS) && this.controlLock == false){
@@ -137,7 +137,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.time.delayedCall(750, () => {
                     this.y += tileSize * tpLength;
                     this.anims.playReverse('teleport', false);
-                    this.controlLock = false;
+                    this.scene.time.delayedCall(600, () => {this.controlLock = false});
                 });
             }
         }
@@ -218,7 +218,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     });
                 }
             }
-            else{
+            else if (this.controlLock == false){
                 this.anims.restart();
                 this.anims.stop(null, true);
             }

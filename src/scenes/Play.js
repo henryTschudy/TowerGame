@@ -86,6 +86,8 @@ class Play extends Phaser.Scene {
         //     //this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y); 
         // }); // Use to check if player is overlapping a wall
 
+        this.cameras.main.fadeIn();
+
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
         this.roomScroll(this.cameras.main, 1)
     }
