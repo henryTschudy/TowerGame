@@ -11,7 +11,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.height =32;
         this.walkSpeed = 5;
         this.failedTeleport = false;
-        this.animationFramerate = 5;
+        this.animationFramerate = frameRate;
         this.controlLock = false;
         this.collisionOff = false;
 
@@ -130,7 +130,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.roomScroll(this.scene.cameras.main, 1);
                 this.scene.roomNumber = 0;
             });
-        } else if(this.scene.deathEnabled && this.isCollidedWith(this.scene.p2Exit)){
+        } else if(this.scene.deathEnabled && keySPACE.isDown &&this.isCollidedWith(this.scene.p2Exit)){
             this.anims.playReverse('teleport', false);
         }
         else if(isTeleporting) {
@@ -157,7 +157,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.x -= tileSize * tpLength;
-                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }
@@ -167,7 +166,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.x += tileSize * tpLength;
-                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }
@@ -177,7 +175,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.y -= tileSize * tpLength;
-                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }
@@ -187,7 +184,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.y += tileSize * tpLength;
-                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }

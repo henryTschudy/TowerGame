@@ -6,7 +6,9 @@ class Play extends Phaser.Scene {
     preload() {
         // Tilemap file is actually 576 x ~4000 some in size. The latter is so we can scroll/warp between levels.
         this.load.image('tiles', './assets/tilemaps/tiles/FinalTiles_-_Atlas.png');
+        this.load.image('pause', './assets/Splash/pause.png');
         this.load.atlas('player', './assets/sprites/AnimationSprites.png', './assets/sprites/walkSprite.json');
+        this.load.atlas('goal', './assets/sprites/goal.png', './assets/sprites/goalSprite.json');
         this.load.tilemapTiledJSON('map', './assets/tilemaps/data/finalTilemap.json');
         this.load.audio('background', './assets/music/background.wav');
     }
@@ -76,6 +78,23 @@ class Play extends Phaser.Scene {
         this.player = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'player').setOrigin(0);
         this.player.setSize(30,30);
 
+        this.goal = this.add.sprite(this.p2Exit.x, this.p2Exit.y, 'goal');
+
+        this.goal.anims.create({
+            key: 'idle',
+            frames:this.goal.anims.generateFrameNames('goal', { zeroPad: 0, frames: ['goal1', 'goal2', 'goal3']}),
+            frameRate: frameRate
+        })
+
+        this.goal.anims.create({
+            key: 'idleWhite',
+            frames:this.goal.anims.generateFrameNames('goal', { zeroPad: 0, frames: ['goal1White', 'goal2White', 'goal3White']}),
+            frameRate: frameRate
+        })
+
+        this.goal.anims.play('idle', true);
+
+
         // Add in the moving tiles
 
         // Collision
@@ -106,10 +125,10 @@ class Play extends Phaser.Scene {
 
     sendToBottom(duration) {
         this.player.controlLock = true;
-        this.cameras.main.shake(3000, 0.01);
-        this.player.body.setVelocityY(-10);
+        //this.cameras.main.shake(3000, 0.01);
+        this.player.body.setVelocity(0, -15);
         this.time.delayedCall(duration-500, () => {
-            this.player.body.setVelocityY(0);
+            this.player.body.setVelocity(0, 0);
             this.player.anims.play('teleport', false);
         });
         this.time.delayedCall(duration, () => {
@@ -128,6 +147,23 @@ class Play extends Phaser.Scene {
         // Thanks to : https://phaser.discourse.group/t/what-is-incamera-in-phaser-3/7031
         // If player is overlapping bad tile : Kill
         // if(this.player.touching.???){ this.player.playerDeath }
+
+        if (Phaser.Input.Keyboard.JustDown(keyESC)){
+            this.scene.pause();
+            if (Phaser.Input.Keyboard.JustDown(keyESC)){
+                this.scene.resume();
+            }
+            if (Phaser.Input.Keyboard.JustDown(keySPACE)){
+                //Play exit sound.
+                this.time.delayedCall(750, () => {
+                    this.cameras.main.fadeOut(100);
+                    this.time.delayedCall(100, () =>{
+                        this.scene.start("menuScene");
+                    });
+                });
+            }
+        }
+
         if (!this.transitioning){
             if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x, this.player.y)) {
                 console.log('A winner is you!');
@@ -135,32 +171,31 @@ class Play extends Phaser.Scene {
             else{
                 this.player.update();
             }           
-            if (!this.player.collisionOff){
-                if (keySPACE.isDown && this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
-                    //TODO: Go to next level
-                    console.log("To Next Level");
-                    this.deathEnabled = false;
-                    if(this.roomNumber > tpLength - 2){
-                        this.roomScroll(this.cameras.main, 7);
-                        this.player.x = this.spawns[6].x;
-                        this.player.y = this.spawns[6].y;
-                        this.roomNumber = 6;
-                    }
-                    else{
-                        this.roomNumber++;
-                        this.roomScroll(this.cameras.main, this.roomNumber + 1);
-                        this.player.x = this.spawns[this.roomNumber].x;
-                        this.player.y = this.spawns[this.roomNumber].y;
-                    }
-                    this.time.delayedCall(500, () => this.deathEnabled = true);
+            if (keySPACE.isDown && this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
+                //TODO: Go to next level
+                console.log("To Next Level");
+                this.deathEnabled = false;
+                if(this.roomNumber > tpLength - 2){
+                    this.roomScroll(this.cameras.main, 7);
+                    this.player.x = this.spawns[6].x;
+                    this.player.y = this.spawns[6].y;
+                    this.roomNumber = 6;
                 }
-                else if(this.deathEnabled && this.player.isCollidedWith(this.p2Exit)){
-                    this.deathEnabled = false;
-                    this.sendToBottom(3000);
-                    this.time.delayedCall(3000, () => {
-                        this.roomScroll(this.cameras.main, this.roomNumber + 1);
-                    });
+                else{
+                    this.roomNumber++;
+                    this.roomScroll(this.cameras.main, this.roomNumber + 1);
+                    this.player.x = this.spawns[this.roomNumber].x;
+                    this.player.y = this.spawns[this.roomNumber].y;
                 }
+                //this.time.delayedCall(500, () => this.deathEnabled = true);
+            }
+            else if(keySPACE.isDown && this.deathEnabled && this.player.isCollidedWith(this.p2Exit)){
+                this.goal.anims.play('idelWhite', true);
+                this.deathEnabled = false;
+                this.sendToBottom(3000);
+                this.time.delayedCall(3000, () => {
+                    this.roomScroll(this.cameras.main, this.roomNumber + 1);
+                });
             }
         }
     }

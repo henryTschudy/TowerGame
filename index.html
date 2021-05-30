@@ -6,14 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tower Game (PROVISIONAL TITLE)</title>
     <style>
-        body { background-color: #101010;}
+        body { background-color: #000000;}
+        /* Three image containers (use 25% for four, and 50% for two, etc) */
+        canvas{
+        display:block;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        }
+        .leftAlign{
+            display:block;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 0%;
+            transform: translate(0%, -50%);
+        }
+        .rightAlign{
+            display:block;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            right: 0%;
+            transform: translate(0%, -50%);
+        }
+        
     </style>
-</head>
-<body>
     <script src="./lib/phaser.js"></script>
     <script src="./src/Prefabs/Player.js"></script>
     <script src="./src/scenes/Menu.js"></script>
     <script src="./src/scenes/Play.js"></script>
     <script src="./src/main.js"></script>
+</head>
+<body>
+    <img class="leftAlign" src="./assets/gifs/left.gif" alt="This tower">
+    <canvas style="width:100%">Your browser doesn't support canvas.</canvas>
+    <img class="rightAlign" src="./assets/gifs/right.gif" alt="hates you.">
 </body>
 </html>

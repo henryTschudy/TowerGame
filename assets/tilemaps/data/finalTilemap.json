@@ -217,19 +217,7 @@
                  "visible":true,
                  "width":0,
                  "x":256,
-                 "y":113
-                }, 
-                {
-                 "height":0,
-                 "id":41,
-                 "name":"p2Exit",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":288,
-                 "y":113
+                 "y":128
                 }],
          "offsetx":16,
          "offsety":16,
@@ -376,6 +364,15 @@
                         }]
                 }, 
                 {
+                 "id":13,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
                  "id":14,
                  "properties":[
                         {
@@ -467,6 +464,15 @@
                 }, 
                 {
                  "id":27,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":28,
                  "properties":[
                         {
                          "name":"collides",
@@ -574,6 +580,15 @@
                         }]
                 }, 
                 {
+                 "id":43,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
                  "id":44,
                  "properties":[
                         {
@@ -665,6 +680,15 @@
                 }, 
                 {
                  "id":57,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":58,
                  "properties":[
                         {
                          "name":"collides",

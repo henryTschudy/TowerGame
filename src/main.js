@@ -3,16 +3,17 @@ const mapWidth = 18; // Number of tiles across map
 const mapHeight = 19;
 const roomWidth = tileSize * mapWidth;
 const roomHeight = tileSize * mapHeight;
+const frameRate = 5;
 let tpLength = 2;
 
 let config = {
     type: Phaser.CANVAS, // Changed from WebGL
     pixelArt: true, // Helps prevent tile bleeing
-    width: roomWidth,
-    height: roomHeight,
     scale: {
+        parent: 'column',
         mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        width: roomWidth,
+        height: roomHeight
     },
     physics: {
         default: 'arcade',
@@ -20,7 +21,8 @@ let config = {
             debug: true,
         }
     },
-    scene: [Menu, Play]
+    scene: [Menu, Play],
+    canvas: document.querySelector('canvas')
 }
 
 let game = new Phaser.Game(config);
