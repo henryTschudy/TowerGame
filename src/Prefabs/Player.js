@@ -122,7 +122,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     collisionCheck(isTeleporting = false){
         if(this.scene.deathEnabled && ((!this.scene.cameras.main.worldView.contains(this.x, this.y)
-                                || this.scene.map.getTileAtWorldXY(this.x+8, this.y+8, false, this.scene.cameras.main, this.scene.wallLayer) != null))) {
+                                || this.scene.map.getTileAtWorldXY(this.x+4, this.y+4, false, this.scene.cameras.main, this.scene.wallLayer) != null))) {
             this.scene.deathEnabled = false;
             this.controlLock = true;
             this.playerDeath(this.scene.p1Spawn.x, this.scene.p1Spawn.y);
@@ -130,8 +130,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.roomScroll(this.scene.cameras.main, 1);
                 this.scene.roomNumber = 0;
             });
-        } else if(this.scene.deathEnabled && keySPACE.isDown &&this.isCollidedWith(this.scene.p2Exit)){
-            this.anims.playReverse('teleport', false);
         }
         else if(isTeleporting) {
             this.controlLock = true;
@@ -151,7 +149,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // if keySHIFT and not walking -> teleport logic
         // Something like this, src : https://phaser.io/examples/v3/view/game-objects/lights/tilemap-layer
         if(keySHIFT.isDown && !this.controlLock){
-            if (Phaser.Input.Keyboard.JustDown(keyA) && !this.controlLock){
+            if (keyA.isDown && !this.controlLock){
                 this.controlLock = true;
                 this.collisionOff = true;
                 this.anims.play('teleport', false);
@@ -160,7 +158,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.collisionCheck(true);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyD) && !this.controlLock){
+            else if (keyD.isDown && !this.controlLock){
                 this.controlLock = true;
                 this.collisionOff = true;
                 this.anims.play('teleport', false);
@@ -169,7 +167,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.collisionCheck(true);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyW) && !this.controlLock){            
+            else if (keyW.isDown && !this.controlLock){            
                 this.controlLock = true;
                 this.collisionOff = true;
                 this.anims.play('teleport', false);
@@ -178,7 +176,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.collisionCheck(true);
                 });
             }
-            else if (Phaser.Input.Keyboard.JustDown(keyS) && !this.controlLock){
+            else if (keyS.isDown && !this.controlLock){
                 this.controlLock = true;
                 this.collisionOff = true;
                 this.anims.play('teleport', false);

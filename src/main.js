@@ -10,7 +10,6 @@ let config = {
     type: Phaser.CANVAS, // Changed from WebGL
     pixelArt: true, // Helps prevent tile bleeing
     scale: {
-        parent: 'column',
         mode: Phaser.Scale.FIT,
         width: roomWidth,
         height: roomHeight
