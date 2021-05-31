@@ -109,7 +109,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     // Pass an object with x and y member variables, returns whether player and the object are colliding
     isCollidedWith(obj) {
-        return Math.abs(this.x - obj.x-32) <= this.width && Math.abs(this.y - obj.y-32) <= this.height;
+        return (Math.abs(this.x - obj.x) <= this.width && Math.abs(this.x - obj.x - 32) >= this.width) && (Math.abs(this.y - obj.y) <= this.height && Math.abs(this.y - obj.y - 32) >= this.width);
     }
 
     exitTeleport(){
