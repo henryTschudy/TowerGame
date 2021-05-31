@@ -122,7 +122,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     collisionCheck(isTeleporting = false){
         if(this.scene.deathEnabled && ((!this.scene.cameras.main.worldView.contains(this.x, this.y)
-                                || this.scene.map.getTileAtWorldXY(this.x+4, this.y+4, false, this.scene.cameras.main, this.scene.wallLayer) != null))) {
+                                || this.scene.map.getTileAtWorldXY(this.x, this.y, false, this.scene.cameras.main, this.scene.wallLayer) != null))) {
             this.scene.deathEnabled = false;
             this.controlLock = true;
             this.playerDeath(this.scene.p1Spawn.x, this.scene.p1Spawn.y);
@@ -143,8 +143,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // }
     // Give me a heads up if you want the time, delta part
     update() {
-
-        this.collisionCheck();
+        if (!this.collisionOff){
+            this.collisionCheck();
+        }
 
         // if keySHIFT and not walking -> teleport logic
         // Something like this, src : https://phaser.io/examples/v3/view/game-objects/lights/tilemap-layer
@@ -155,6 +156,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.x -= tileSize * tpLength;
+                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }
@@ -164,6 +166,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.x += tileSize * tpLength;
+                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }
@@ -173,6 +176,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.y -= tileSize * tpLength;
+                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }
@@ -182,6 +186,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(750, () => {
                     this.y += tileSize * tpLength;
+                    this.collisionOff = false;
                     this.collisionCheck(true);
                 });
             }

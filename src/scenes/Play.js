@@ -119,24 +119,6 @@ class Play extends Phaser.Scene {
         });
     }
 
-    sendToBottom(duration) {
-        //this.cameras.main.shake(duration, 0.01);
-        this.player.body.setVelocity(0, -15);
-        this.time.delayedCall(duration-500, () => {
-            this.player.body.setVelocity(0, 0);
-            this.player.anims.play('teleport', false);
-        });
-        this.time.delayedCall(duration, () => {
-            this.roomNumber = 0;
-            this.player.x = this.spawns[0].x;
-            this.player.y = this.spawns[0].y;
-            this.player.exitTeleport();
-            if(tpLength < 6){
-                ++tpLength;
-            }
-        });
-    }
-
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyESC)){
             this.scene.pause();
@@ -180,12 +162,24 @@ class Play extends Phaser.Scene {
             }
             else if(keySPACE.isDown && this.deathEnabled && this.player.isCollidedWith(this.p2Exit)){
                 this.player.controlLock = true;
+                this.player.collisionOff = true;
                 this.goal.anims.play('idelWhite', true);
                 this.deathEnabled = false;
-                this.sendToBottom(3000);
-                this.time.delayedCall(2500, () => {this.player.anims.playReverse('teleport', false)});
+                //this.cameras.main.shake(duration, 0.01);
+                this.player.body.setVelocityY(-15);
+                this.time.delayedCall(2500, () => {
+                    this.player.body.setVelocityY(0);
+                    this.player.anims.play('teleport', false);
+                });
                 this.time.delayedCall(3000, () => {
+                    this.roomNumber = 0;
+                    this.player.x = this.spawns[0].x;
+                    this.player.y = this.spawns[0].y;
                     this.roomScroll(this.cameras.main, this.roomNumber + 1);
+                    this.player.exitTeleport(true);
+                    if(tpLength < 6){
+                        ++tpLength;
+                    }
                 });
             }
         }
