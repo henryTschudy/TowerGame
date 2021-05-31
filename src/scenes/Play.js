@@ -49,10 +49,6 @@ class Play extends Phaser.Scene {
         this.transitioning = false;
 
         this.time.delayedCall(200, () => this.deathEnabled = true);
-        // findObject is drunk :(
-        // console.log(this.p1Spawn);
-        // console.log(this.p1Spawn.x);
-        // console.log(this.p1Spawn.y);
        
         // Produce key meanings
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -78,7 +74,7 @@ class Play extends Phaser.Scene {
         this.player = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'player').setOrigin(0);
         this.player.setSize(30,30);
 
-        this.goal = this.add.sprite(this.p2Exit.x, this.p2Exit.y, 'goal');
+        this.goal = this.add.sprite(this.p2Exit.x+16, this.p2Exit.y, 'goal');
 
         this.goal.anims.create({
             key: 'idle',
@@ -142,11 +138,6 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        // If player is off camera && levelSwitch != true : Kill
-        // Thanks to : https://phaser.discourse.group/t/what-is-incamera-in-phaser-3/7031
-        // If player is overlapping bad tile : Kill
-        // if(this.player.touching.???){ this.player.playerDeath }
-
         if (Phaser.Input.Keyboard.JustDown(keyESC)){
             this.scene.pause();
             if (Phaser.Input.Keyboard.JustDown(keyESC)){
@@ -171,7 +162,6 @@ class Play extends Phaser.Scene {
                 this.player.update();
             }           
             if (keySPACE.isDown && this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
-                //TODO: Go to next level
                 console.log("To Next Level");
                 this.deathEnabled = false;
                 if(this.roomNumber > tpLength - 2){
