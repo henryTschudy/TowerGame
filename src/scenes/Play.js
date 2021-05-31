@@ -6,6 +6,7 @@ class Play extends Phaser.Scene {
     preload() {
         // Tilemap file is actually 576 x ~4000 some in size. The latter is so we can scroll/warp between levels.
         this.load.image('tiles', './assets/tilemaps/tiles/FinalTiles_-_Atlas.png');
+        this.load.image('tiles', './assets/tilemaps/tiles/FinalTiles_-_Atlas_Black.png');
         this.load.image('pause', './assets/Splash/pause.png');
         this.load.atlas('player', './assets/sprites/AnimationSprites.png', './assets/sprites/walkSprite.json');
         this.load.atlas('goal', './assets/sprites/goal.png', './assets/sprites/goalSprite.json');
