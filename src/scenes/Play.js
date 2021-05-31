@@ -136,7 +136,16 @@ class Play extends Phaser.Scene {
                 });
             }
         }
-
+ //Hot fix for level 1 bug
+ if (this.roomNumber == 0) {
+    if (this.player.x > 514 || this.player.y > 4194) {
+        this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y);
+        this.time.delayedCall(1000, () => {
+            this.roomScroll(this.cameras.main, 1);
+            this.roomNumber = 0;
+        });
+    }
+}
         if (!this.transitioning){
             if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x, this.player.y)) {
                 console.log('A winner is you!');
