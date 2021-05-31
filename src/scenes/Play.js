@@ -46,10 +46,10 @@ class Play extends Phaser.Scene {
         this.exits = [this.p1Exit, this.r1Exit, this.r2Exit, this.r3Exit, this.r4Exit, this.r5Exit];
         this.roomNumber = 0;
 
-        this.deathEnabled = false;
-        this.transitioning = false;
+        this.cameras.main.setScroll(0, (6) * roomHeight);
 
-        this.time.delayedCall(200, () => this.deathEnabled = true);
+        this.deathEnabled = false;
+        this.transitioning = true;
        
         // Produce key meanings
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -74,6 +74,7 @@ class Play extends Phaser.Scene {
         // Add in the player
         this.player = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'player').setOrigin(0);
         this.player.setSize(30,30);
+        this.transitioning = false;
 
         this.goal = this.add.sprite(this.p2Exit.x+16, this.p2Exit.y, 'goal');
 
@@ -91,23 +92,15 @@ class Play extends Phaser.Scene {
 
         this.goal.anims.play('idle', true);
 
-
-        // Add in the moving tiles
-
         // Collision
         wallLayer.setCollisionByProperty({ collides: true });
         this.physics.add.collider(this.player, wallLayer);
 
-        // RESOLVE HOW THIS OVERLAP SHIT WORKS SO THAT OUR STUFF IS GOOD
-        // this.physics.add.overlap(this.player, wallLayer, () => {
-        //     console.log("Player zooped into wall");
-        //     //this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y); 
-        // }); // Use to check if player is overlapping a wall
-
-
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
         this.cameras.main.setScroll(0, (6) * roomHeight);
         this.cameras.main.fadeIn(1000);
+
+        
     }
 
     roomScroll(cam, room){
@@ -136,17 +129,7 @@ class Play extends Phaser.Scene {
                 });
             }
         }
- //Hot fix for level 1 bug
- if (this.roomNumber == 0) {
-    if (this.player.x > 514 || this.player.y > 4194) {
-        this.player.playerDeath(this.p1Spawn.x, this.p1Spawn.y);
-        this.time.delayedCall(1000, () => {
-            this.roomScroll(this.cameras.main, 1);
-            this.roomNumber = 0;
-        });
-    }
-}
-        if (!this.transitioning){
+         if (!this.transitioning){
             if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x, this.player.y)) {
                 console.log('A winner is you!');
             }

@@ -109,7 +109,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     // Pass an object with x and y member variables, returns whether player and the object are colliding
     isCollidedWith(obj) {
-        return Math.abs(this.x - obj.x) <= this.width && Math.abs(this.y - obj.y) <= this.height;
+        return Math.abs(this.x - obj.x-32) <= this.width && Math.abs(this.y - obj.y-32) <= this.height;
     }
 
     exitTeleport(){
@@ -122,7 +122,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     collisionCheck(isTeleporting = false){
         if(this.scene.deathEnabled && ((!this.scene.cameras.main.worldView.contains(this.x, this.y)
-                                || this.scene.map.getTileAtWorldXY(this.x+4, this.y+4, false, this.scene.cameras.main, this.scene.wallLayer) != null))) {
+        || this.scene.map.getTileAtWorldXY(this.x+4, this.y+4, false, this.scene.cameras.main, this.scene.wallLayer) != null) 
+        || this.scene.roomNumber == 0 && (this.x > mapWidth || this.y > mapHeight * 7 || this.x < 0 || this.y < 0))) {
             this.scene.deathEnabled = false;
             this.controlLock = true;
             this.playerDeath(this.scene.p1Spawn.x, this.scene.p1Spawn.y);
