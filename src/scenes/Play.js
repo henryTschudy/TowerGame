@@ -12,6 +12,7 @@ class Play extends Phaser.Scene {
         this.load.atlas('goal', './assets/sprites/goal.png', './assets/sprites/goalSprite.json');
         this.load.tilemapTiledJSON('map', './assets/tilemaps/data/finalTilemap.json');
         this.load.audio('background', './assets/music/background.wav');
+        this.load.audio('ambient', './assets/music/ambient.mp3');
     }
 
     create() {
@@ -68,6 +69,10 @@ class Play extends Phaser.Scene {
 
         // Add music
         this.music = this.sound.add('background');
+        this.music.setLoop(true);
+        this.music.play();
+
+        this.music = this.sound.add('ambient');
         this.music.setLoop(true);
         this.music.play();
 
