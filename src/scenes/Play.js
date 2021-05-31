@@ -159,7 +159,6 @@ class Play extends Phaser.Scene {
                     this.player.x = this.spawns[this.roomNumber].x;
                     this.player.y = this.spawns[this.roomNumber].y;
                 }
-                //this.time.delayedCall(500, () => this.deathEnabled = true);
             }
             else if(keySPACE.isDown && this.deathEnabled && this.player.isCollidedWith(this.p2Exit)){
                 this.player.controlLock = true;
@@ -182,7 +181,14 @@ class Play extends Phaser.Scene {
                         ++tpLength;
                     }
                 });
-            }
+            } else if (keySPACE.isDown && this.roomNumber < 6 && (this.player.isCollidedWith(this.spawns[this.roomNumber]) && !this.player.isCollidedWith(this.p1Spawn))) {
+                console.log("To previous Level");
+                this.deathEnabled = false;
+                this.roomNumber--;
+                this.roomScroll(this.cameras.main, this.roomNumber - 1);
+                this.player.x = this.exits[this.roomNumber].x-16;
+                this.player.y = this.exits[this.roomNumber].y-16;
+                }
         }
     }
 }
