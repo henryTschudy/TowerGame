@@ -6,7 +6,7 @@ class Play extends Phaser.Scene {
     preload() {
         // Tilemap file is actually 576 x ~4000 some in size. The latter is so we can scroll/warp between levels.
         this.load.image('tiles', './assets/tilemaps/tiles/FinalTiles_-_Atlas.png');
-        this.load.image('tiles', './assets/tilemaps/tiles/FinalTiles_-_Atlas_Black.png');
+        this.load.image('tiles2', './assets/tilemaps/tiles/FinalTiles_-_Atlas_Black.png');
         this.load.image('pause', './assets/Splash/pause.png');
         this.load.atlas('player', './assets/sprites/AnimationSprites.png', './assets/sprites/walkSprite.json');
         this.load.atlas('goal', './assets/sprites/goal.png', './assets/sprites/goalSprite.json');
@@ -19,7 +19,7 @@ class Play extends Phaser.Scene {
         // Produce static map elements
         // Note: tileSize at 32. Variable allows up/down-scaling.
         const map = this.add.tilemap('map');
-        const tileset = map.addTilesetImage('FinalTiles_-_Atlas', 'tiles');
+        const tileset = map.addTilesetImage('FinalTiles_-_Atlas', 'tiles2');
         const tilelayer = map.createLayer('Tiles', tileset, 0, 0);
         const debrisLayer = map.createLayer('Debris', tileset, 0, 0);
         const wallLayer = map.createLayer('Walls', tileset, 0, 0);
