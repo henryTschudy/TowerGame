@@ -104,7 +104,6 @@ class Hud extends Phaser.Scene {
         }
 
         if (tpLength != this.currentDistance){
-            this.showUI()
             //play tp length update sfx
             this.time.delayedCall(750, () => this.number.text = tpLength);
         }
