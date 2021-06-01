@@ -20,7 +20,7 @@ let config = {
             debug: true,
         }
     },
-    scene: [Menu, Play],
+    scene: [Menu, Hud, Play],
     canvas: document.querySelector('canvas')
 }
 

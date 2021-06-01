@@ -7,7 +7,6 @@ class Play extends Phaser.Scene {
         // Tilemap file is actually 576 x ~4000 some in size. The latter is so we can scroll/warp between levels.
         this.load.image('tiles', './assets/tilemaps/tiles/FinalTiles_-_Atlas.png');
         this.load.image('tiles2', './assets/tilemaps/tiles/FinalTiles_-_Atlas_Black.png');
-        this.load.image('pause', './assets/Splash/pause.png');
         this.load.atlas('player', './assets/sprites/AnimationSprites.png', './assets/sprites/walkSprite.json');
         this.load.atlas('goal', './assets/sprites/goal.png', './assets/sprites/goalSprite.json');
         this.load.tilemapTiledJSON('map', './assets/tilemaps/data/finalTilemap.json');
@@ -101,11 +100,12 @@ class Play extends Phaser.Scene {
         wallLayer.setCollisionByProperty({ collides: true });
         this.physics.add.collider(this.player, wallLayer);
 
+        this.scene.launch("Hud");
+
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
         this.cameras.main.setScroll(0, (6) * roomHeight);
         this.cameras.main.fadeIn(1000);
 
-        
     }
 
     roomScroll(cam, room){
