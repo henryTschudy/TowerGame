@@ -57,6 +57,7 @@ class Play extends Phaser.Scene {
 
         this.deathEnabled = false;
         this.transitioning = true;
+        this.ghosted = false;
        
         // Produce key meanings
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -143,7 +144,16 @@ class Play extends Phaser.Scene {
         }
          if (!this.transitioning){
             if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x, this.player.y)) {
-                console.log('A winner is you!');
+                if(this.ghosted){
+                    // ur a dead boy even though you escaped
+                    // Alternate ending not yet implemented though
+                    this.cameras.main.fadeOut(100)
+                    this.time.delayedCall(100, () => {this.scene.start('goodEnding');} );
+                }
+                else{
+                    this.cameras.main.fadeOut(100)
+                    this.time.delayedCall(100, () => {this.scene.start('goodEnding');} );
+                }
             }
             else{
                 this.player.update();
