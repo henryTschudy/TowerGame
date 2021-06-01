@@ -36,6 +36,7 @@ class Play extends Phaser.Scene {
 
         this.p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn');
         this.p1Exit = map.findObject('Objs', obj => obj.name === 'p1Exit');
+        this.p1Window = map.findObject('Objs', obj => obj.name === 'p1Window')
         this.r1Spawn = map.findObject('Objs', obj => obj.name === 'r1Spawn');
         this.r1Exit = map.findObject('Objs', obj => obj.name === 'r1Exit');
         this.r2Spawn = map.findObject('Objs', obj => obj.name === 'r2Spawn');
@@ -192,7 +193,10 @@ class Play extends Phaser.Scene {
                 this.roomScroll(this.cameras.main, this.roomNumber - 1);
                 this.player.x = this.exits[this.roomNumber].x-16;
                 this.player.y = this.exits[this.roomNumber].y-16;
-                }
+            }
+            else if (Phaser.Input.Keyboard.JustDown(keySPACE) && this.player.isCollidedWith(this.p1Window)){
+                console.log("What a beautiful day outside...")
+            }
         }
     }
 }
