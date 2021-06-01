@@ -85,13 +85,11 @@ class Hud extends Phaser.Scene {
                 //Play exit sound.
                 this.time.delayedCall(750, () => {
                     this.isPaused = false;
-                    this.playScene.scene.resume();
                     this.cameras.main.fadeOut(500);
                     this.playScene.cameras.main.fadeOut(500);
                     this.time.delayedCall(500, () =>{
                         this.game.sound.stopAll();
-                        this.playScene.scene.stop();
-                        this.scene.stop("playScene");
+                        this.playScene.scene.restart();
                         this.scene.start("menuScene");
                     });
                 });
