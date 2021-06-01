@@ -17,9 +17,11 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
-        this.playScene = this.scene.get("playScene");
-        this.hudScene = this.scene.get("hudScene");
-        this.returning = false;
+        this.scene.stop("hudScene");
+        this.scene.stop("playScene");
+
+        console.log(this.scene.get("hudScene"))
+        console.log(this.scene.get("playScene"))
 
         this.menu = this.add.image(0, 0, 'splash').setOrigin(0,0).setDepth(-1);
         this.play = this.add.sprite(144, roomHeight-61, 'playHover');
@@ -43,10 +45,6 @@ class Menu extends Phaser.Scene {
                 //Play select sound
                 this.time.delayedCall(750, () => {
                     this.cameras.main.fadeOut(100)
-                    if(this.returning){
-                        this.hudScene.scene.restart();
-                        this.playScene.scene.restart();
-                    }
                     this.time.delayedCall(100, () => {this.scene.start('playScene')});
                 });
                 

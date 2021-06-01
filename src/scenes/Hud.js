@@ -10,7 +10,6 @@ class Hud extends Phaser.Scene {
 
     create () {
         this.playScene = this.scene.get("playScene");
-        this.menuScene = this.scene.get("menuScene");
         this.isPaused = false;
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -92,8 +91,7 @@ class Hud extends Phaser.Scene {
                     this.time.delayedCall(500, () =>{
                         this.game.sound.stopAll();
                         this.playScene.scene.stop();
-                        this.scene.restart("menuScene");
-                        this.menuScene.returning = true;
+                        this.scene.stop("playScene");
                         this.scene.start("menuScene");
                     });
                 });
