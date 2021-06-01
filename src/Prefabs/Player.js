@@ -78,7 +78,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.create({
             key: 'teleport',
             frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standForward', 'teleport1', 'teleport2', 'teleport3', 'teleport4', 'teleport5']}),
-            frameRate: this.animationFramerate*2,
+            frameRate: this.animationFramerate*4,
             skipMissedFrames: false,
             repeat: 0
         })
@@ -116,9 +116,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     exitTeleport(){
         this.anims.playReverse('teleport', false);
         if (!this.scene.deathEnabled){
-            this.scene.time.delayedCall(600, () => {this.scene.deathEnabled = true});
+            this.scene.time.delayedCall(300, () => {this.scene.deathEnabled = true});
         }
-        this.scene.time.delayedCall(600, () => {this.controlLock = false});
+        this.scene.time.delayedCall(300, () => {this.controlLock = false});
     }
 
     collisionCheck(isTeleporting = false){
@@ -156,7 +156,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.controlLock = true;
                 this.collisionOff = true;
                 this.anims.play('teleport', false);
-                this.scene.time.delayedCall(750, () => {
+                this.scene.time.delayedCall(375, () => {
                     this.x -= tileSize * tpLength;
                     this.collisionOff = false;
                     this.collisionCheck(true);
@@ -166,7 +166,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.controlLock = true;
                 this.collisionOff = true;
                 this.anims.play('teleport', false);
-                this.scene.time.delayedCall(750, () => {
+                this.scene.time.delayedCall(375, () => {
                     this.x += tileSize * tpLength;
                     this.collisionOff = false;
                     this.collisionCheck(true);
@@ -176,7 +176,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.controlLock = true;
                 this.collisionOff = true;
                 this.anims.play('teleport', false);
-                this.scene.time.delayedCall(750, () => {
+                this.scene.time.delayedCall(375, () => {
                     this.y -= tileSize * tpLength;
                     this.collisionOff = false;
                     this.collisionCheck(true);
@@ -186,7 +186,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.controlLock = true;
                 this.collisionOff = true;
                 this.anims.play('teleport', false);
-                this.scene.time.delayedCall(750, () => {
+                this.scene.time.delayedCall(375, () => {
                     this.y += tileSize * tpLength;
                     this.collisionOff = false;
                     this.collisionCheck(true);
