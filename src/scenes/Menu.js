@@ -12,9 +12,15 @@ class Menu extends Phaser.Scene {
         this.load.image('helpHover', './assets/Splash/helpHover.png');
         this.load.image('helpHit', './assets/Splash/helpHit.png');
         this.cameras.main.fadeOut(0);
+        console.log("menu preload!")
     }
 
     create() {
+        this.playScene = this.scene.get("playScene");
+        this.hudScene = this.scene.get("hudScene");
+        this.returning = false;
+
+        console.log("menu created!")
         this.menu = this.add.image(0, 0, 'splash').setOrigin(0,0).setDepth(-1);
         this.play = this.add.sprite(144, roomHeight-61, 'playHover');
         this.help = this.add.sprite(roomWidth-155, roomHeight-61, 'helpEmpty');
@@ -24,14 +30,6 @@ class Menu extends Phaser.Scene {
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            if (this.currentSelect == 'play'){    
-                this.scene.start('playScene')
-            } else {
-                //this.scene.start('help');
-            }
-        })
         
         this.time.delayedCall(750, () => {
             this.cameras.main.fadeIn(1000);
@@ -39,16 +37,28 @@ class Menu extends Phaser.Scene {
     }
 
     update() {
+        console.log("update!")
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
             if(this.currentSelect == "play"){
                 this.play.setTexture('playHit');
                 //Play select sound
-                this.time.delayedCall(750, () => this.cameras.main.fadeOut(100));
+                this.time.delayedCall(750, () => {
+                    this.cameras.main.fadeOut(100)
+                    if(this.returning){
+                        this.hudScene.scene.restart();
+                        this.playScene.scene.restart();
+                    }
+                    this.time.delayedCall(100, () => {this.scene.start('playScene')});
+                });
+                
             }
             else {
                 this.help.setTexture('helpHit');
                 //Play select sound
-                this.time.delayedCall(750, () => this.cameras.main.fadeOut(100));
+                this.time.delayedCall(750, () => {
+                    this.cameras.main.fadeOut(100)
+                    this.time.delayedCall(100, () =>{});
+                });
             }
         }
         if (Phaser.Input.Keyboard.JustDown(keyA)){

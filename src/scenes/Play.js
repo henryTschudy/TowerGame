@@ -15,6 +15,10 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.hudScene = this.scene.get("hudScene");
+        this.playScene = this.scene.get("playScene");
+        this.cameras.main.fadeOut(0);
+        this.hudScene.cameras.main.fadeOut(0);
         // Produce static map elements
         // Note: tileSize at 32. Variable allows up/down-scaling.
         const map = this.add.tilemap('map');
@@ -24,6 +28,9 @@ class Play extends Phaser.Scene {
         const wallLayer = map.createLayer('Walls', tileset, 0, 0);
         const objs = map.createLayer('Objs', tileset, 0, 0);
         
+        this.scene.launch("hudScene");
+        this.scene.moveAbove("playScene", "hudScene");
+
         this.map = map;
         this.wallLayer = wallLayer;
 
@@ -100,39 +107,30 @@ class Play extends Phaser.Scene {
         wallLayer.setCollisionByProperty({ collides: true });
         this.physics.add.collider(this.player, wallLayer);
 
-        this.scene.launch("Hud");
-
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
         this.cameras.main.setScroll(0, (6) * roomHeight);
         this.cameras.main.fadeIn(1000);
-
+        this.hudScene.cameras.main.fadeIn(1000);
+        
     }
 
     roomScroll(cam, room){
         this.transitioning = true;
         cam.fadeOut(500);
+        this.hudScene.cameras.main.fadeOut(500);
         this.time.delayedCall(500, () => {
             cam.setScroll(0, (7 - room) * roomHeight);
             cam.fadeIn(500)
+            this.hudScene.cameras.main.fadeIn(500)
             this.time.delayedCall(100, () => this.transitioning = false);
         });
     }
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyESC)){
+            this.hudScene.isPaused = true;
+            this.hudScene.pause.setAlpha(1);
             this.scene.pause();
-            if (Phaser.Input.Keyboard.JustDown(keyESC)){
-                this.scene.resume();
-            }
-            if (Phaser.Input.Keyboard.JustDown(keySPACE)){
-                //Play exit sound.
-                this.time.delayedCall(750, () => {
-                    this.cameras.main.fadeOut(100);
-                    this.time.delayedCall(100, () =>{
-                        this.scene.start("menuScene");
-                    });
-                });
-            }
         }
          if (!this.transitioning){
             if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x, this.player.y)) {
