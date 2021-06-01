@@ -36,6 +36,7 @@ class Play extends Phaser.Scene {
 
         this.p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn');
         this.p1Exit = map.findObject('Objs', obj => obj.name === 'p1Exit');
+        this.p1Window = map.findObject('Objs', obj => obj.name === 'p1Window')
         this.r1Spawn = map.findObject('Objs', obj => obj.name === 'r1Spawn');
         this.r1Exit = map.findObject('Objs', obj => obj.name === 'r1Exit');
         this.r2Spawn = map.findObject('Objs', obj => obj.name === 'r2Spawn');
@@ -57,6 +58,7 @@ class Play extends Phaser.Scene {
 
         this.deathEnabled = false;
         this.transitioning = true;
+        this.ghosted = false;
        
         // Produce key meanings
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -143,7 +145,16 @@ class Play extends Phaser.Scene {
         }
          if (!this.transitioning){
             if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x, this.player.y)) {
-                console.log('A winner is you!');
+                if(this.ghosted){
+                    // ur a dead boy even though you escaped
+                    // Alternate ending not yet implemented though
+                    this.cameras.main.fadeOut(100)
+                    this.time.delayedCall(100, () => {this.scene.start('goodEnding');} );
+                }
+                else{
+                    this.cameras.main.fadeOut(100)
+                    this.time.delayedCall(100, () => {this.scene.start('goodEnding');} );
+                }
             }
             else{
                 this.player.update();
@@ -192,7 +203,10 @@ class Play extends Phaser.Scene {
                 this.roomScroll(this.cameras.main, this.roomNumber - 1);
                 this.player.x = this.exits[this.roomNumber].x-16;
                 this.player.y = this.exits[this.roomNumber].y-16;
-                }
+            }
+            else if (Phaser.Input.Keyboard.JustDown(keySPACE) && this.player.isCollidedWith(this.p1Window)){
+                console.log("What a beautiful day outside...")
+            }
         }
     }
 }
