@@ -7,7 +7,6 @@ class Help extends Phaser.Scene {
         this.load.image('help1', './assets/Splash/help1.png');
         this.load.image('help2', './assets/Splash/help2.png');
         this.cameras.main.fadeOut(0);
-        console.log("menu preload!");
     }
 
     create() {

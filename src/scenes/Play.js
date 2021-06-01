@@ -15,8 +15,11 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.scene.launch("hudScene");
+        this.scene.moveAbove("playScene", "hudScene");
+
         this.hudScene = this.scene.get("hudScene");
-        this.playScene = this.scene.get("playScene");
+        
         this.cameras.main.fadeOut(0);
         this.hudScene.cameras.main.fadeOut(0);
         // Produce static map elements
@@ -27,15 +30,13 @@ class Play extends Phaser.Scene {
         const debrisLayer = map.createLayer('Debris', tileset, 0, 0);
         const wallLayer = map.createLayer('Walls', tileset, 0, 0);
         const objs = map.createLayer('Objs', tileset, 0, 0);
-        
-        this.scene.launch("hudScene");
-        this.scene.moveAbove("playScene", "hudScene");
 
         this.map = map;
         this.wallLayer = wallLayer;
 
         this.p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn');
         this.p1Exit = map.findObject('Objs', obj => obj.name === 'p1Exit');
+        this.p1Window = map.findObject('Objs', obj => obj.name === 'p1Window')
         this.r1Spawn = map.findObject('Objs', obj => obj.name === 'r1Spawn');
         this.r1Exit = map.findObject('Objs', obj => obj.name === 'r1Exit');
         this.r2Spawn = map.findObject('Objs', obj => obj.name === 'r2Spawn');
@@ -202,7 +203,10 @@ class Play extends Phaser.Scene {
                 this.roomScroll(this.cameras.main, this.roomNumber - 1);
                 this.player.x = this.exits[this.roomNumber].x-16;
                 this.player.y = this.exits[this.roomNumber].y-16;
-                }
+            }
+            else if (Phaser.Input.Keyboard.JustDown(keySPACE) && this.player.isCollidedWith(this.p1Window)){
+                console.log("What a beautiful day outside...")
+            }
         }
     }
 }
