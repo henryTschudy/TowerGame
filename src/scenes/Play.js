@@ -66,6 +66,7 @@ class Play extends Phaser.Scene {
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyZERO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO);
         
         // Set world and camera bounds.
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -105,7 +106,7 @@ class Play extends Phaser.Scene {
 
         // Collision
         wallLayer.setCollisionByProperty({ collides: true });
-        this.physics.add.collider(this.player, wallLayer);
+        this.physicsObject = this.physics.add.collider(this.player, wallLayer);
 
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
         this.cameras.main.setScroll(0, (6) * roomHeight);

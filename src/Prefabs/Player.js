@@ -14,6 +14,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.animationFramerate = frameRate;
         this.controlLock = false;
         this.collisionOff = false;
+        this.ghostMode = false;
 
         this.anims.create({
             key: 'standForward',
@@ -123,7 +124,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     collisionCheck(isTeleporting = false){
         if(this.scene.deathEnabled && ((!this.scene.cameras.main.worldView.contains(this.x, this.y)
-        || this.scene.map.getTileAtWorldXY(this.x+4, this.y+4, false, this.scene.cameras.main, this.scene.wallLayer) != null) 
+        || (!this.ghostMode && this.scene.map.getTileAtWorldXY(this.x+4, this.y+4, false, this.scene.cameras.main, this.scene.wallLayer) != null)) 
         || this.scene.roomNumber == 0 && (this.x >= roomWidth || this.y >= roomHeight * 7 || this.x < 0 || this.y < 0))) {
             this.scene.deathEnabled = false;
             this.controlLock = true;
@@ -147,6 +148,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     update() {
         if (!this.collisionOff){
             this.collisionCheck();
+        }
+
+        if(Phaser.Input.Keyboard.JustDown(keyZERO)){
+            if(!this.ghostMode){
+                this.ghostMode = true;
+                this.setAlpha(0.5);
+                this.scene.physics.world.colliders.destroy();
+            } else if(this.ghostMode) {
+                this.ghostMode = false;
+                this.setAlpha(1);
+                this.scene.physics.add.collider(this, this.scene.wallLayer);
+                this.collisionCheck(true);
+            }
         }
 
         // if keySHIFT and not walking -> teleport logic
