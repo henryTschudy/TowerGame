@@ -112,7 +112,12 @@ class Play extends Phaser.Scene {
         this.cameras.main.setScroll(0, (6) * roomHeight);
         this.cameras.main.fadeIn(1000);
         this.hudScene.cameras.main.fadeIn(1000);
-        
+        this.time.delayedCall(500, () => this.uiToggle())
+    }
+
+    uiToggle(duration=3000){
+        this.hudScene.showUI();
+        this.time.delayedCall(duration, () => this.hudScene.hideUI());
     }
 
     roomScroll(cam, room){
@@ -123,7 +128,10 @@ class Play extends Phaser.Scene {
             cam.setScroll(0, (7 - room) * roomHeight);
             cam.fadeIn(500)
             this.hudScene.cameras.main.fadeIn(500)
-            this.time.delayedCall(100, () => this.transitioning = false);
+            this.time.delayedCall(100, () => {
+                this.transitioning = false
+                this.uiToggle();
+            });
         });
     }
 

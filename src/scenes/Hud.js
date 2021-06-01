@@ -36,11 +36,48 @@ class Hud extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.add.image(0, 0, 'ui').setOrigin(0,0).setDepth(1);
         this.pause = this.add.image(0, 0, "pause").setOrigin(0,0).setDepth(3);
         this.pause.setAlpha(0);
-        this.add.text(roomWidth - 300, 5, 'Teleport Distance', textConfig).setOrigin(0).setDepth(2);
+
+        this.uiSprite = this.add.image(0, 0, 'ui').setOrigin(0,0).setDepth(1);
+        this.teleportText = this.add.text(roomWidth - 300, 5, 'Teleport Distance', textConfig).setOrigin(0).setDepth(2);
         this.number = this.add.text(roomWidth - 58, 15, tpLength, numConfig).setOrigin(0).setDepth(2);
+    }
+
+    hideUI(){
+        this.tweens.add({
+            targets: this.uiSprite,
+            y: 0-this.uiSprite.height,
+            duration: 1000
+        });
+        this.tweens.add({
+            targets: this.teleportText,
+            y: 0-(this.uiSprite.height+5),
+            duration: 1000
+        });
+        this.tweens.add({
+            targets: this.number,
+            y: 0-(this.uiSprite.height+15),
+            duration: 1000
+        });
+    }
+
+    showUI(){
+        this.tweens.add({
+            targets: this.uiSprite,
+            y: 0,
+            duration: 1000
+        });
+        this.tweens.add({
+            targets: this.teleportText,
+            y: 5,
+            duration: 1000
+        });
+        this.tweens.add({
+            targets: this.number,
+            y: 15,
+            duration: 1000
+        });
     }
 
     update(){
@@ -69,6 +106,7 @@ class Hud extends Phaser.Scene {
         }
 
         if (tpLength != this.currentDistance){
+            this.showUI()
             //play tp length update sfx
             this.time.delayedCall(750, () => this.number.text = tpLength);
         }
