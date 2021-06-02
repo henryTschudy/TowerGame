@@ -165,7 +165,7 @@ class Play extends Phaser.Scene {
             this.scene.pause();
         }
          if (!this.transitioning){
-            if(tpLength >= 6 && !this.cameras.main.worldView.contains(this.player.x, this.player.y)) {
+            if(tpLength >= 6) {
                 if(this.ghosted){
                     // ur a dead boy even though you escaped
                     // Alternate ending not yet implemented though
