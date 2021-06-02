@@ -59,6 +59,7 @@ class Play extends Phaser.Scene {
         this.deathEnabled = false;
         this.transitioning = true;
         this.ghosted = false;
+        this.victory = false;
        
         // Produce key meanings
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -86,6 +87,18 @@ class Play extends Phaser.Scene {
         this.music.play();
 
         this.goal = new Goal(this, this.p2Exit.x, this.p2Exit.y-32, 'goal');
+
+        this.windowGlow = this.add.sprite(this.p1Window.x, this.p1Window.y, 'goal');
+        this.windowGlow.anims.create({
+            key: 'active', 
+            frames:this.anims.generateFrameNames('goal', { zeroPad: 0, frames: ['light1', 'light2']}),
+            frameRate: frameRate/2
+        });
+        this.windowGlow.anims.create({
+            key: 'idle', 
+            frames:this.anims.generateFrameNames('goal', { zeroPad: 0, frames: ['light1']}),
+            frameRate: frameRate/2
+        });
 
         // Add in the player
         this.player = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'player').setOrigin(0);
@@ -124,6 +137,11 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        if(!this.victory){
+            this.windowGlow.anims.play('idle', true);
+        } else {
+            this.windowGlow.anims.play('active', true);
+        }
         if (!this.goal.isActive){
             this.goal.anims.play('idle', true);
         }
@@ -137,12 +155,11 @@ class Play extends Phaser.Scene {
                 if(this.ghosted){
                     // ur a dead boy even though you escaped
                     // Alternate ending not yet implemented though
-                    this.cameras.main.fadeOut(100)
-                    this.time.delayedCall(100, () => {this.scene.start('goodEnding');} );
+                    // set alt end variable here
+                    this.victory = true;
                 }
                 else{
-                    this.cameras.main.fadeOut(100)
-                    this.time.delayedCall(100, () => {this.scene.start('goodEnding');} );
+                    this.victory = true;
                 }
             }
             else{
@@ -199,6 +216,12 @@ class Play extends Phaser.Scene {
             }
             else if (Phaser.Input.Keyboard.JustDown(keySPACE) && this.player.isCollidedWith(this.p1Window)){
                 console.log("What a beautiful day outside...")
+                // Run code for showing outside
+                if(this.victory){
+                    this.player.anims.play('teleport', false);
+                    this.cameras.main.fadeOut(1000);
+                    this.time.delayedCall(100, () => {this.scene.start('goodEnding');} );
+                }
             }
         }
     }
