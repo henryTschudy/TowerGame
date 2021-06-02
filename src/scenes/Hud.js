@@ -89,8 +89,12 @@ class Hud extends Phaser.Scene {
                     this.playScene.cameras.main.fadeOut(500);
                     this.time.delayedCall(500, () =>{
                         this.game.sound.stopAll();
-                        this.playScene.scene.restart();
+                        this.playScene.scene.stop();
                         this.scene.start("menuScene");
+                        if (this.scene.start("menuScene"))
+                        this.playScene.scene.sendToBack();
+                        this.playScene.scene.restart();
+                        tpLength = 2;
                     });
                 });
             } else if (Phaser.Input.Keyboard.JustDown(keyESC)){
