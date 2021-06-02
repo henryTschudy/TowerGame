@@ -20,8 +20,11 @@ class Play extends Phaser.Scene {
 
         this.hudScene = this.scene.get("hudScene");
         
-        this.cameras.main.fadeOut(0);
-        this.hudScene.cameras.main.fadeOut(0);
+        try{
+            this.cameras.main.fadeOut(0);
+            this.hudScene.cameras.main.fadeOut(0);
+        }
+        catch (e) {} // Suppress a specific, weird error that doesn't effect the game.
         // Produce static map elements
         // Note: tileSize at 32. Variable allows up/down-scaling.
         const map = this.add.tilemap('map');
