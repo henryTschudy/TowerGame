@@ -33,6 +33,7 @@ class Play extends Phaser.Scene {
 
         this.map = map;
         this.wallLayer = wallLayer;
+        console.log(this.wallLayer)
 
         this.p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn');
         this.p1Exit = map.findObject('Objs', obj => obj.name === 'p1Exit');
@@ -107,7 +108,7 @@ class Play extends Phaser.Scene {
 
         // Collision
         wallLayer.setCollisionByProperty({ collides: true });
-        this.physicsObject = this.physics.add.collider(this.player, wallLayer);
+        this.physics.add.collider(this.player, this.wallLayer);
 
         // Playtest puzzle testing camera scroll, 0 being start, 7 being the end room.
         this.cameras.main.setScroll(0, (6) * roomHeight);
@@ -192,7 +193,7 @@ class Play extends Phaser.Scene {
                 this.player.body.setVelocityY(-15);
                 this.time.delayedCall(2500, () => {
                     this.player.body.setVelocityY(0);
-                    this.physics.add.collider(this, this.scene.wallLayer);
+                    this.physics.add.collider(this.player, this.wallLayer);
                     this.player.anims.play('teleport', false);
                 });
                 this.time.delayedCall(3000, () => {
