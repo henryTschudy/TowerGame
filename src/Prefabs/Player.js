@@ -16,6 +16,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.collisionOff = false;
         this.ghostMode = false;
 
+        this.deathSound = this.scene.sound.add('die');
+        this.exitTeleportSound = this.scene.sound.add('TPOut');
+        this.teleportSound = this.scene.sound.add('TPIn')
+        this.stepSound = this.scene.sound.add('step')
+
         this.anims.create({
             key: 'standForward',
             frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standForward']}),
@@ -97,6 +102,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     playerDeath (x, y) {
         this.controlLock = true;
         this.anims.play('death', false);
+        this.deathSound.play();
         this.scene.time.delayedCall(1000, () => {
             console.log('I am Dead!')
             this.x = x;
@@ -115,6 +121,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     exitTeleport(){
+        this.exitTeleportSound.play();
         this.anims.playReverse('teleport', false);
         if (!this.scene.deathEnabled){
             this.scene.time.delayedCall(300, () => {this.scene.deathEnabled = true});
@@ -169,6 +176,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (keyA.isDown && !this.controlLock){
                 this.controlLock = true;
                 this.collisionOff = true;
+                this.teleportSound.play();
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(375, () => {
                     this.x -= tileSize * tpLength;
@@ -179,6 +187,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             else if (keyD.isDown && !this.controlLock){
                 this.controlLock = true;
                 this.collisionOff = true;
+                this.teleportSound.play();
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(375, () => {
                     this.x += tileSize * tpLength;
@@ -189,6 +198,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             else if (keyW.isDown && !this.controlLock){            
                 this.controlLock = true;
                 this.collisionOff = true;
+                this.teleportSound.play();
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(375, () => {
                     this.y -= tileSize * tpLength;
@@ -199,6 +209,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             else if (keyS.isDown && !this.controlLock){
                 this.controlLock = true;
                 this.collisionOff = true;
+                this.teleportSound.play();
                 this.anims.play('teleport', false);
                 this.scene.time.delayedCall(375, () => {
                     this.y += tileSize * tpLength;
@@ -214,6 +225,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.anims.play('walkLeft', true);
                     this.setVelocity(-tileSize * this.walkSpeed, 0);
                     this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
+                        if(!this.stepSound.isPlaying){
+                            this.stepSound.play();
+                        }
                         this.isMoving = false;
                         this.setVelocity(0, 0);
                         if(this.x % 32 != 0){
@@ -233,6 +247,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.anims.play('walkRight', true);
                     this.setVelocity(tileSize * this.walkSpeed, 0);
                     this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
+                        if(!this.stepSound.isPlaying){
+                            this.stepSound.play();
+                        }
                         this.isMoving = false;
                         this.setVelocity(0, 0);
                         if(this.x % 32 != 0){
@@ -252,6 +269,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.anims.play('walkBackward', true);
                     this.setVelocity(0, -tileSize * this.walkSpeed);
                     this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
+                        if(!this.stepSound.isPlaying){
+                            this.stepSound.play();
+                        }
                         this.isMoving = false;
                         this.setVelocity(0, 0);
                         if(this.y % 32 != 0){
@@ -271,6 +291,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.anims.play('walkForward', true);
                     this.setVelocity(0, tileSize * this.walkSpeed);
                     this.scene.time.delayedCall(1000 / this.walkSpeed, () => {
+                        if(!this.stepSound.isPlaying){
+                            this.stepSound.play();
+                        }
                         this.isMoving = false;
                         this.setVelocity(0, 0);
                         if(this.y % 32 != 0){

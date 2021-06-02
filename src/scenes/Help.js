@@ -6,6 +6,7 @@ class Help extends Phaser.Scene {
     preload() {
         this.load.image('help1', './assets/Splash/help1.png');
         this.load.image('help2', './assets/Splash/help2.png');
+        this.load.audio('menuConfirm', './assets/music/menuconfirm.wav');
         this.cameras.main.fadeOut(0);
     }
 
@@ -15,6 +16,8 @@ class Help extends Phaser.Scene {
 
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         
+        this.confirmSound = this.sound.add('menuConfirm');
+
         this.time.delayedCall(750, () => {
             this.cameras.main.fadeIn(1000);
         });
@@ -23,7 +26,7 @@ class Help extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
                 this.helpImage.setTexture('help2');
-                //Play select sound
+                this.confirmSound.play();
                 this.time.delayedCall(750, () => {
                     this.cameras.main.fadeOut(100)
                     this.time.delayedCall(100, () => {this.scene.start('menuScene')

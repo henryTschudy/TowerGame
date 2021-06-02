@@ -13,6 +13,8 @@ class Menu extends Phaser.Scene {
         this.load.image('helpHit', './assets/Splash/helpHit.png');
         this.load.image('help1', './assets/Splash/help1.png');
         this.load.image('help2', './assets/Splash/help1.png');
+        this.load.audio('menuConfirm', './assets/music/menuconfirm.wav');
+        this.load.audio('menuSelect', './assets/music/menuselect.wav');
         this.cameras.main.fadeOut(0);
     }
 
@@ -29,6 +31,9 @@ class Menu extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, roomWidth, roomHeight);
         this.currentSelect = "play";
 
+        this.selectSound = this.sound.add('menuSelect');
+        this.confirmSound = this.sound.add('menuConfirm');
+
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -42,7 +47,7 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
             if(this.currentSelect == "play"){
                 this.play.setTexture('playHit');
-                //Play select sound
+                this.confirmSound.play();
                 this.time.delayedCall(750, () => {
                     this.cameras.main.fadeOut(100)
                     this.time.delayedCall(100, () => {this.scene.start('playScene')});
@@ -51,7 +56,7 @@ class Menu extends Phaser.Scene {
             }
             else {
                 this.help.setTexture('helpHit');
-                //Play select sound
+                this.confirmSound.play();
                 this.time.delayedCall(750, () => {
                     this.cameras.main.fadeOut(100)
                     this.time.delayedCall(100, () =>{this.scene.start('helpScene')});
@@ -60,7 +65,7 @@ class Menu extends Phaser.Scene {
         }
         if (Phaser.Input.Keyboard.JustDown(keyA)){
             if (this.currentSelect == "help"){
-                //Play blip sound
+                this.selectSound.play();
                 this.play.setTexture('playHover');
                 this.help.setTexture('helpEmpty');
                 this.currentSelect = "play";
@@ -68,7 +73,7 @@ class Menu extends Phaser.Scene {
         }
         if (Phaser.Input.Keyboard.JustDown(keyD)){
             if (this.currentSelect == "play"){
-                //Play blip sound
+                this.selectSound.play();
                 this.play.setTexture('playEmpty');
                 this.help.setTexture('helpHover');
                 this.currentSelect = "help";

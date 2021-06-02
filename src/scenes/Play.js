@@ -11,7 +11,14 @@ class Play extends Phaser.Scene {
         this.load.atlas('goal', './assets/sprites/goal.png', './assets/sprites/goalSprite.json');
         this.load.tilemapTiledJSON('map', './assets/tilemaps/data/finalTilemap.json');
         this.load.audio('background', './assets/music/background.wav');
-        this.load.audio('ambient', './assets/music/ambient.mp3');
+        this.load.audio('die', './assets/music/die.wav');
+        this.load.audio('pause', './assets/music/pause.wav');
+        this.load.audio('powerUp', './assets/music/powerup.wav');
+        this.load.audio('stairsDown', './assets/music/stairsdown.wav');
+        this.load.audio('stairsUp', './assets/music/stairsup.wav');
+        this.load.audio('step', './assets/music/step.wav');
+        this.load.audio('TPIn', './assets/music/tpin.wav');
+        this.load.audio('TPOut', './assets/music/tpout.wav');
     }
 
     create() {
@@ -85,9 +92,10 @@ class Play extends Phaser.Scene {
         this.music.setLoop(true);
         this.music.play();
 
-        this.music = this.sound.add('ambient');
-        this.music.setLoop(true);
-        this.music.play();
+        this.pauseSound = this.sound.add('pause');
+        this.upSound = this.sound.add('stairsUp');
+        this.powerUpSound = this.sound.add('powerUp');
+        this.downSound = this.sound.add('stairsDown');
 
         this.goal = new Goal(this, this.p2Exit.x, this.p2Exit.y-32, 'goal');
 
@@ -149,6 +157,7 @@ class Play extends Phaser.Scene {
             this.goal.anims.play('idle', true);
         }
         if (Phaser.Input.Keyboard.JustDown(keyESC)){
+            this.pauseSound.play();
             this.hudScene.isPaused = true;
             this.hudScene.pause.setAlpha(1);
             this.scene.pause();
@@ -169,6 +178,7 @@ class Play extends Phaser.Scene {
                 this.player.update();
             }           
             if (keySPACE.isDown && this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
+                this.upSound.play();
                 this.deathEnabled = false;
                 if(this.roomNumber > tpLength - 2){
                     this.roomScroll(this.cameras.main, 7);
@@ -201,6 +211,7 @@ class Play extends Phaser.Scene {
                 this.goal.anims.play('idleWhite', true);
                 this.deathEnabled = false;
                 this.cameras.main.shake(3000, 0.01);
+                this.powerUpSound.play();
                 this.player.body.setVelocityY(-15);
                 this.time.delayedCall(2500, () => {
                     this.player.body.setVelocityY(0);
@@ -220,6 +231,7 @@ class Play extends Phaser.Scene {
                 });
             } else if (keySPACE.isDown && this.roomNumber < 6 && (this.player.isCollidedWith(this.spawns[this.roomNumber]) && !this.player.isCollidedWith(this.p1Spawn))) {
                 this.deathEnabled = false;
+                this.downSound.play();
                 this.roomNumber--;
                 this.roomScroll(this.cameras.main, this.roomNumber - 1);
                 this.player.x = this.exits[this.roomNumber].x-16;

@@ -6,13 +6,18 @@ class Hud extends Phaser.Scene {
     preload() {
         this.load.image('ui', './assets/Splash/ui.png');
         this.load.image('pause', './assets/Splash/pause.png');
-        this.load.image('outside', './assets/sprites/outside.png')
-        this.load.image('mask', './assets/sprites/mask.png')
+        this.load.image('outside', './assets/sprites/outside.png');
+        this.load.image('mask', './assets/sprites/mask.png');
+        this.load.audio('unpause', './assets/music/unpause.wav');
+        this.load.audio('end', './assets/music/end.wav');
     }
 
     create () {
         this.playScene = this.scene.get("playScene");
         this.isPaused = false;
+
+        this.unpauseSound = this.sound.add('unpause');
+        this.endSound = this.sound.add('end')
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -92,7 +97,7 @@ class Hud extends Phaser.Scene {
     update(){
         if (this.isPaused){
             if (Phaser.Input.Keyboard.JustDown(keySPACE)){
-                //Play exit sound.
+                this.endSound.play();
                 this.time.delayedCall(750, () => {
                     this.isPaused = false;
                     this.cameras.main.fadeOut(500);
@@ -107,7 +112,7 @@ class Hud extends Phaser.Scene {
                     });
                 });
             } else if (Phaser.Input.Keyboard.JustDown(keyESC)){
-                //Play unpause sound
+                this.unpauseSound.play();
                 this.pause.setAlpha(0);
                 this.isPaused = false;
                 this.playScene.scene.resume();
@@ -115,7 +120,6 @@ class Hud extends Phaser.Scene {
         }
 
         if (tpLength != this.currentDistance){
-            //play tp length update sfx
             this.time.delayedCall(750, () => this.number.text = tpLength);
         }
     }
