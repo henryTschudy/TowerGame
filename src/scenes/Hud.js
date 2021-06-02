@@ -91,7 +91,6 @@ class Hud extends Phaser.Scene {
                         this.game.sound.stopAll();
                         this.playScene.scene.stop();
                         this.scene.start("menuScene");
-                        if (this.scene.start("menuScene"))
                         this.playScene.scene.sendToBack();
                         this.playScene.scene.restart();
                         tpLength = 2;
