@@ -218,7 +218,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 });
             }
         }
-        else{
+        else if(!this.controlLock){
             if (keyA.isDown && !this.controlLock){
                 if(!this.isMoving){
                     this.isMoving = true;
