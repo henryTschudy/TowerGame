@@ -187,7 +187,7 @@ class Play extends Phaser.Scene {
                 this.player.controlLock = true;
                 this.player.collisionOff = true;
                 this.player.isMoving = false;
-                this.setVelocity(0, 0);
+                this.player.setVelocity(0, 0);
                 if(this.player.y % 32 != 0){
                     if(this.player.y % 32 > 16){
                         this.player.y += 32 - (this.player.y % 32)
