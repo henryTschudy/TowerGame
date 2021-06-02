@@ -33,7 +33,6 @@ class Play extends Phaser.Scene {
 
         this.map = map;
         this.wallLayer = wallLayer;
-        console.log(this.wallLayer)
 
         this.p1Spawn = map.findObject('Objs', obj => obj.name === 'p1Spawn');
         this.p1Exit = map.findObject('Objs', obj => obj.name === 'p1Exit');
@@ -167,7 +166,6 @@ class Play extends Phaser.Scene {
                 this.player.update();
             }           
             if (keySPACE.isDown && this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
-                console.log("To Next Level");
                 this.deathEnabled = false;
                 if(this.roomNumber > tpLength - 2){
                     this.roomScroll(this.cameras.main, 7);
@@ -208,7 +206,6 @@ class Play extends Phaser.Scene {
                     }
                 });
             } else if (keySPACE.isDown && this.roomNumber < 6 && (this.player.isCollidedWith(this.spawns[this.roomNumber]) && !this.player.isCollidedWith(this.p1Spawn))) {
-                console.log("To previous Level");
                 this.deathEnabled = false;
                 this.roomNumber--;
                 this.roomScroll(this.cameras.main, this.roomNumber - 1);
@@ -217,6 +214,38 @@ class Play extends Phaser.Scene {
             }
             else if (Phaser.Input.Keyboard.JustDown(keySPACE) && this.player.isCollidedWith(this.p1Window)){
                 console.log("What a beautiful day outside...")
+                this.player.controlLock = true;
+                this.cameras.main.fadeOut(1000);
+                this.hudScene.cameras.main.fadeOut(1000);
+                this.time.delayedCall(1000, () => {
+                    this.hudScene.outsideImage.setAlpha(1);
+                    this.hudScene.maskImage.setAlpha(1);
+                    this.cameras.main.fadeIn(1000);
+                    this.hudScene.cameras.main.fadeIn(1000);
+                    this.time.delayedCall(1000, () => {
+                        this.tweens.add({
+                            targets: this.hudScene.outsideImage,
+                            y: 50,
+                            duration: 4000
+                        });
+                    });
+                    this.time.delayedCall(4000, () => {
+                        this.cameras.main.fadeOut(1000);
+                        this.hudScene.cameras.main.fadeOut(1000);
+                        this.time.delayedCall(1000, () => {
+                            this.hudScene.outsideImage.setAlpha(0);
+                            this.hudScene.maskImage.setAlpha(0);
+                            this.tweens.add({
+                                targets: this.hudScene.outsideImage,
+                                y: 0,
+                                duration: 0
+                            });
+                            this.cameras.main.fadeIn(1000);
+                            this.hudScene.cameras.main.fadeIn(1000);
+                            this.player.controlLock = false;
+                        });
+                    })
+                })
                 // Run code for showing outside
                 if(this.victory){
                     this.player.anims.play('teleport', false);

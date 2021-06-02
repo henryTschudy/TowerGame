@@ -6,6 +6,8 @@ class Hud extends Phaser.Scene {
     preload() {
         this.load.image('ui', './assets/Splash/ui.png');
         this.load.image('pause', './assets/Splash/pause.png');
+        this.load.image('outside', './assets/sprites/outside.png')
+        this.load.image('mask', './assets/sprites/mask.png')
     }
 
     create () {
@@ -41,6 +43,14 @@ class Hud extends Phaser.Scene {
         this.uiSprite = this.add.image(0, 0, 'ui').setOrigin(0,0).setDepth(1);
         this.teleportText = this.add.text(roomWidth - 300, 5, 'Teleport Distance', textConfig).setOrigin(0).setDepth(2);
         this.number = this.add.text(roomWidth - 58, 15, tpLength, numConfig).setOrigin(0).setDepth(2);
+    
+        this.outsideImage = this.add.image(0,0,'outside').setOrigin(0,0);
+        this.outsideImage.setAlpha(0);
+        this.outsideImage.setDepth(4);
+
+        this.maskImage = this.add.image(0,0,'mask').setOrigin(0,0);
+        this.maskImage.setAlpha(0);
+        this.maskImage.setDepth(5);
     }
 
     hideUI(){
