@@ -183,6 +183,16 @@ class Play extends Phaser.Scene {
             else if(keySPACE.isDown && this.deathEnabled && this.player.isCollidedWith(this.p2Exit)){
                 this.player.controlLock = true;
                 this.player.collisionOff = true;
+                this.player.isMoving = false;
+                this.setVelocity(0, 0);
+                if(this.player.y % 32 != 0){
+                    if(this.player.y % 32 > 16){
+                        this.player.y += 32 - (this.player.y % 32)
+                    }
+                    else{
+                        this.player.y -= this.player.y % 32
+                    }
+                }
                 this.physics.world.colliders.destroy();
                 this.goal.isActive = true;
                 this.goal.anims.play('idleWhite', true);
@@ -213,7 +223,6 @@ class Play extends Phaser.Scene {
                 this.player.y = this.exits[this.roomNumber].y-16;
             }
             else if (Phaser.Input.Keyboard.JustDown(keySPACE) && this.player.isCollidedWith(this.p1Window)){
-                console.log("What a beautiful day outside...")
                 this.player.controlLock = true;
                 this.cameras.main.fadeOut(1000);
                 this.hudScene.cameras.main.fadeOut(1000);
