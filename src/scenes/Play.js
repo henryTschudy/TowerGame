@@ -85,26 +85,12 @@ class Play extends Phaser.Scene {
         this.music.setLoop(true);
         this.music.play();
 
-        this.goal = this.add.sprite(this.p2Exit.x, this.p2Exit.y-32, 'goal');
+        this.goal = new Goal(this, this.p2Exit.x, this.p2Exit.y-32, 'goal');
 
         // Add in the player
         this.player = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'player').setOrigin(0);
         this.player.setSize(30,30);
         this.transitioning = false;
-
-        this.anims.create({
-            key: 'idle',
-            frames:this.goal.anims.generateFrameNames('goal', { zeroPad: 0, frames: ['goal1', 'goal2', 'goal3']}),
-            frameRate: frameRate
-        })
-
-        this.anims.create({
-            key: 'idleWhite',
-            frames:this.goal.anims.generateFrameNames('goal', { zeroPad: 0, frames: ['goal1White', 'goal2White', 'goal3White']}),
-            frameRate: frameRate
-        })
-
-        this.goal.play('idle', true);
 
         // Collision
         wallLayer.setCollisionByProperty({ collides: true });
@@ -138,6 +124,9 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        if (!this.goal.isActive){
+            this.goal.anims.play('idle', true);
+        }
         if (Phaser.Input.Keyboard.JustDown(keyESC)){
             this.hudScene.isPaused = true;
             this.hudScene.pause.setAlpha(1);
@@ -179,9 +168,10 @@ class Play extends Phaser.Scene {
                 this.player.controlLock = true;
                 this.player.collisionOff = true;
                 this.physics.world.colliders.destroy();
-                this.goal.anims.play('idelWhite', true);
+                this.goal.isActive = true;
+                this.goal.anims.play('idleWhite', true);
                 this.deathEnabled = false;
-                //this.cameras.main.shake(duration, 0.01);
+                this.cameras.main.shake(3000, 0.01);
                 this.player.body.setVelocityY(-15);
                 this.time.delayedCall(2500, () => {
                     this.player.body.setVelocityY(0);
@@ -194,6 +184,7 @@ class Play extends Phaser.Scene {
                     this.player.y = this.spawns[0].y;
                     this.roomScroll(this.cameras.main, this.roomNumber + 1);
                     this.player.exitTeleport(true);
+                    this.goal.isActive = false;
                     if(tpLength < 6){
                         ++tpLength;
                     }
