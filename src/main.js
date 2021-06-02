@@ -17,12 +17,12 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            debug: false,
         }
     },
-    scene: [Menu, Play],
+    scene: [Help, Menu, Hud, Play, goodEnding],
     canvas: document.querySelector('canvas')
 }
 
 let game = new Phaser.Game(config);
-let keyW, keyA, keyS, keyD, keySHIFT, keySPACE, keyESC;
+let keyW, keyA, keyS, keyD, keySHIFT, keySPACE, keyESC, keyZERO;
