@@ -19,6 +19,7 @@ class Play extends Phaser.Scene {
         this.load.audio('step', './assets/music/step.wav');
         this.load.audio('TPIn', './assets/music/tpin.wav');
         this.load.audio('TPOut', './assets/music/tpout.wav');
+        this.load.audio('TPInSuper', './assets/music/tpinSuper.wav');
     }
 
     create() {
@@ -96,6 +97,7 @@ class Play extends Phaser.Scene {
         this.upSound = this.sound.add('stairsUp');
         this.powerUpSound = this.sound.add('powerUp');
         this.downSound = this.sound.add('stairsDown');
+        this.superTeleportSoundIn = this.sound.add('TPInSuper');
 
         this.goal = new Goal(this, this.p2Exit.x, this.p2Exit.y-32, 'goal');
 
@@ -113,7 +115,7 @@ class Play extends Phaser.Scene {
 
         // Add in the player
         this.player = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'player').setOrigin(0);
-        this.player.setSize(30,30);
+        this.player.setSize(32,32);
         this.transitioning = false;
 
         // Collision
@@ -216,6 +218,7 @@ class Play extends Phaser.Scene {
                 this.time.delayedCall(2500, () => {
                     this.player.body.setVelocityY(0);
                     this.physics.add.collider(this.player, this.wallLayer);
+                    this.superTeleportSoundIn.play();
                     this.player.anims.play('teleport', false);
                 });
                 this.time.delayedCall(3000, () => {
@@ -223,11 +226,13 @@ class Play extends Phaser.Scene {
                     this.player.x = this.spawns[0].x;
                     this.player.y = this.spawns[0].y;
                     this.roomScroll(this.cameras.main, this.roomNumber + 1);
-                    this.player.exitTeleport(true);
-                    this.goal.isActive = false;
-                    if(tpLength < 6){
-                        ++tpLength;
-                    }
+                    this.time.delayedCall(500, ()=>{
+                        this.player.exitTeleport(true);
+                        this.goal.isActive = false;
+                        if(tpLength < 6){
+                            ++tpLength;
+                        }
+                    });
                 });
             } else if (keySPACE.isDown && this.roomNumber < 6 && (this.player.isCollidedWith(this.spawns[this.roomNumber]) && !this.player.isCollidedWith(this.p1Spawn))) {
                 this.deathEnabled = false;

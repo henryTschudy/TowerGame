@@ -121,12 +121,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     exitTeleport(){
-        this.exitTeleportSound.play();
         this.anims.playReverse('teleport', false);
         if (!this.scene.deathEnabled){
             this.scene.time.delayedCall(300, () => {this.scene.deathEnabled = true});
         }
         this.scene.time.delayedCall(300, () => {this.controlLock = false});
+        this.exitTeleportSound.play();
     }
 
     collisionCheck(isTeleporting = false){
