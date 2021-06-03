@@ -70,7 +70,7 @@ class Play extends Phaser.Scene {
         this.deathEnabled = false;
         this.transitioning = true;
         this.ghosted = false;
-        this.victory = false;
+        this.victory = true;
        
         // Produce key meanings
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -275,11 +275,13 @@ class Play extends Phaser.Scene {
                         });
                     })
                 })
-                // Run code for showing outside
                 if(this.victory){
                     this.player.anims.play('teleport', false);
                     this.cameras.main.fadeOut(1000);
-                    this.time.delayedCall(100, () => {this.scene.start('goodEnding');} );
+                    this.time.delayedCall(100, () => {
+                        this.scene.stop('hudScence')
+                        this.scene.start('goodEnding');
+                    } );
                 }
             }
         }
