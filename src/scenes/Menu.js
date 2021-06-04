@@ -15,6 +15,7 @@ class Menu extends Phaser.Scene {
         this.load.image('help2', './assets/Splash/help1.png');
         this.load.audio('menuConfirm', './assets/music/menuconfirm.wav');
         this.load.audio('menuSelect', './assets/music/menuselect.wav');
+        //this.load.audio('menuMusic', './assets/music/');
         this.cameras.main.fadeOut(0);
     }
 
@@ -36,6 +37,7 @@ class Menu extends Phaser.Scene {
 
         this.selectSound = this.sound.add('menuSelect');
         this.confirmSound = this.sound.add('menuConfirm');
+        this.music = this.sound.add('menuMusic');
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -53,7 +55,12 @@ class Menu extends Phaser.Scene {
                 this.play.setTexture('playHit');
                 this.confirmSound.play();
                 this.time.delayedCall(750, () => {
-                    this.cameras.main.fadeOut(100)
+                    //this.tweens.add({
+                        //targets:  this.music,
+                        //volume:   0,
+                        //duration: 100
+                    //});
+                    this.cameras.main.fadeOut(100);
                     this.time.delayedCall(100, () => {this.scene.start('playScene')});
                 });
                 
@@ -62,7 +69,7 @@ class Menu extends Phaser.Scene {
                 this.help.setTexture('helpHit');
                 this.confirmSound.play();
                 this.time.delayedCall(750, () => {
-                    this.cameras.main.fadeOut(100)
+                    this.cameras.main.fadeOut(100);
                     this.time.delayedCall(100, () =>{this.scene.start('helpScene')});
                 });
             }

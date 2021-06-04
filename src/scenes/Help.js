@@ -28,8 +28,8 @@ class Help extends Phaser.Scene {
                 this.helpImage.setTexture('help2');
                 this.confirmSound.play();
                 this.time.delayedCall(750, () => {
-                    this.cameras.main.fadeOut(100)
-                    this.time.delayedCall(100, () => {this.scene.start('menuScene')
+                    this.cameras.main.fadeOut(100);
+                    this.time.delayedCall(100, () => {this.scene.start('menuScene');
                 });
             });
         }

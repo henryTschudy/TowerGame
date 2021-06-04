@@ -18,15 +18,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.deathSound = this.scene.sound.add('die');
         this.exitTeleportSound = this.scene.sound.add('TPOut');
-        this.teleportSound = this.scene.sound.add('TPIn')
-        this.stepSound = this.scene.sound.add('step')
+        this.teleportSound = this.scene.sound.add('TPIn');
+        this.stepSound = this.scene.sound.add('step');
 
         this.anims.create({
             key: 'standForward',
             frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standForward']}),
             frameRate: this.animationFramerate,
             repeat: -1
-        })
+        });
 
         this.anims.create({
             key: 'walkForward',
@@ -34,14 +34,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             frameRate: this.animationFramerate,
             skipMissedFrames: false,
             repeat: -1
-        })
+        });
 
         this.anims.create({
             key: 'standLeft',
             frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standLeft']}),
             frameRate: this.animationFramerate,
             repeat: -1
-        })
+        });
 
         this.anims.create({
             key: 'walkLeft',
@@ -49,14 +49,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             frameRate: this.animationFramerate,
             skipMissedFrames: false,
             repeat: -1
-        })
+        });
 
         this.anims.create({
             key: 'standRight',
             frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standRight']}),
             frameRate: this.animationFramerate,
             repeat: -1
-        })
+        });
 
         this.anims.create({
             key: 'walkRight',
@@ -64,14 +64,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             frameRate: this.animationFramerate,
             skipMissedFrames: false,
             repeat: -1
-        })
+        });
 
         this.anims.create({
             key: 'standBackward',
             frames:this.anims.generateFrameNames('player', { zeroPad: 0, frames: ['standBackward']}),
             frameRate: this.animationFramerate,
             repeat: -1
-        })
+        });
 
         this.anims.create({
             key: 'walkBackward',
@@ -79,7 +79,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             frameRate: this.animationFramerate,
             skipMissedFrames: false,
             repeat: -1
-        })
+        });
 
         this.anims.create({
             key: 'teleport',
@@ -87,7 +87,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             frameRate: this.animationFramerate*4,
             skipMissedFrames: false,
             repeat: 0
-        })
+        });
 
         this.anims.create({
             key: 'death',
@@ -95,7 +95,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             frameRate: this.animationFramerate*2,
             skipMissedFrames: false,
             repeat: 0
-        })
+        });
 
     }
 
@@ -110,7 +110,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.scene.time.delayedCall(500, () => {
                 this.anims.playReverse('teleport', false);
                 this.scene.time.delayedCall(600, () => {this.controlLock = false});
-            })
+            });
         });
     }
 
@@ -232,10 +232,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         this.setVelocity(0, 0);
                         if(this.x % 32 != 0){
                             if(this.x % 32 > 16){
-                                this.x += 32 - (this.x % 32)
+                                this.x += 32 - (this.x % 32);
                             }
                             else{
-                                this.x -= this.x % 32
+                                this.x -= this.x % 32;
                             }
                         }
                     });
@@ -254,10 +254,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         this.setVelocity(0, 0);
                         if(this.x % 32 != 0){
                             if(this.x % 32 > 16){
-                                this.x += 32 - (this.x % 32)
+                                this.x += 32 - (this.x % 32);
                             }
                             else{
-                                this.x -= this.x % 32
+                                this.x -= this.x % 32;
                             }
                         }
                     });
@@ -276,10 +276,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         this.setVelocity(0, 0);
                         if(this.y % 32 != 0){
                             if(this.y % 32 > 16){
-                                this.y += 32 - (this.y % 32)
+                                this.y += 32 - (this.y % 32);
                             }
                             else{
-                                this.y -= this.y % 32
+                                this.y -= this.y % 32;
                             }
                         }
                     });
@@ -298,10 +298,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         this.setVelocity(0, 0);
                         if(this.y % 32 != 0){
                             if(this.y % 32 > 16){
-                                this.y += 32 - (this.y % 32)
+                                this.y += 32 - (this.y % 32);
                             }
                             else{
-                                this.y -= this.y % 32
+                                this.y -= this.y % 32;
                             }
                         }
                     });

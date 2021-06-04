@@ -199,10 +199,10 @@ class Play extends Phaser.Scene {
                 this.player.setVelocity(0, 0);
                 if(this.player.y % 32 != 0){
                     if(this.player.y % 32 > 16){
-                        this.player.y += 32 - (this.player.y % 32)
+                        this.player.y += 32 - (this.player.y % 32);
                     }
                     else{
-                        this.player.y -= this.player.y % 32
+                        this.player.y -= this.player.y % 32;
                     }
                 }
                 this.physics.world.colliders.destroy();
@@ -280,7 +280,8 @@ class Play extends Phaser.Scene {
                     });
                     this.player.anims.play('teleport', false);
                     this.cameras.main.fadeOut(1000);
-                    this.time.delayedCall(100, () => {
+                    this.time.delayedCall(1000, () => {
+                        this.scene.stop('hudScene');
                         this.scene.start('goodEnding');
                     } );
                 }

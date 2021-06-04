@@ -9,12 +9,12 @@ class Goal extends Phaser.Physics.Arcade.Sprite {
             key: 'idle',
             frames:this.anims.generateFrameNames('goal', { zeroPad: 0, frames: ['goal1', 'goal2', 'goal3', 'goal2']}),
             frameRate: frameRate
-        })
+        });
 
         this.anims.create({
             key: 'idleWhite',
             frames:this.anims.generateFrameNames('goal', { zeroPad: 0, frames: ['goal1White', 'goal2White', 'goal3White', 'goal2White']}),
             frameRate: frameRate
-        })
+        });
     }
 }
