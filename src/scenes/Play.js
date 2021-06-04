@@ -70,7 +70,7 @@ class Play extends Phaser.Scene {
         this.deathEnabled = false;
         this.transitioning = true;
         this.ghosted = false;
-        this.victory = true;
+        this.victory = false;
        
         // Produce key meanings
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -164,7 +164,7 @@ class Play extends Phaser.Scene {
             this.hudScene.pause.setAlpha(1);
             this.scene.pause();
         }
-         if (!this.transitioning){
+        if (!this.transitioning){
             if(tpLength >= 6) {
                 if(this.ghosted){
                     // ur a dead boy even though you escaped
@@ -176,9 +176,7 @@ class Play extends Phaser.Scene {
                     this.victory = true;
                 }
             }
-            else{
-                this.player.update();
-            }           
+            this.player.update();           
             if (keySPACE.isDown && this.roomNumber < 6 && this.player.isCollidedWith(this.exits[this.roomNumber])) {
                 this.upSound.play();
                 this.deathEnabled = false;
@@ -279,7 +277,6 @@ class Play extends Phaser.Scene {
                     this.player.anims.play('teleport', false);
                     this.cameras.main.fadeOut(1000);
                     this.time.delayedCall(100, () => {
-                        this.scene.stop('hudScence')
                         this.scene.start('goodEnding');
                     } );
                 }
