@@ -111,6 +111,7 @@ class Hud extends Phaser.Scene {
                         // this.playScene.scene.sendToBack();
                         this.playScene.scene.restart();
                         tpLength = 2;
+                        console.log('Reset')
                     });
                 });
             } else if (Phaser.Input.Keyboard.JustDown(keyESC)){
