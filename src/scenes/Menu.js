@@ -37,7 +37,7 @@ class Menu extends Phaser.Scene {
 
         this.selectSound = this.sound.add('menuSelect');
         this.confirmSound = this.sound.add('menuConfirm');
-        this.music = this.sound.add('menuMusic');
+        //this.music = this.sound.add('menuMusic');
 
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
