@@ -22,9 +22,6 @@ class Menu extends Phaser.Scene {
         this.scene.stop("hudScene");
         this.scene.stop("playScene");
 
-        console.log(this.scene.get("hudScene"))
-        console.log(this.scene.get("playScene"))
-
         this.anims.create({
             key: 'menuAnim',
             frames: this.anims.generateFrameNumbers('splash', { zeroPad: 0, frames: [0, 1, 2, 0, 1, 2, 1, 0, 2, 1]}),

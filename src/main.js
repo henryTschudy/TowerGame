@@ -4,7 +4,7 @@ const mapHeight = 19;
 const roomWidth = tileSize * mapWidth;
 const roomHeight = tileSize * mapHeight;
 const frameRate = 5;
-let tpLength = 2;
+let tpLength = 6;
 
 let config = {
     type: Phaser.CANVAS, // Changed from WebGL

@@ -9,7 +9,7 @@ class goodEnding extends Phaser.Scene {
         this.playScene = this.scene.get("playScene");
     }
     create() {
-        this.endScene = this.add.image(0, 0, 'endScene').setOrigin(0,0);
+        this.endScene = this.add.image(0, 0, 'finalAnimation').setOrigin(0,0);
 
         this.anims.create({
             key: 'endSceneAnim',

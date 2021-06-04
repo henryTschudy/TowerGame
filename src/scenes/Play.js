@@ -40,7 +40,6 @@ class Play extends Phaser.Scene {
         const tilelayer = map.createLayer('Tiles', tileset, 0, 0);
         const debrisLayer = map.createLayer('Debris', tileset, 0, 0);
         const wallLayer = map.createLayer('Walls', tileset, 0, 0);
-        const objs = map.createLayer('Objs', tileset, 0, 0);
 
         this.map = map;
         this.wallLayer = wallLayer;
@@ -274,6 +273,11 @@ class Play extends Phaser.Scene {
                     })
                 })
                 if(this.victory){
+                    this.tweens.add({
+                        targets:  this.music,
+                        volume:   0,
+                        duration: 1000
+                    });
                     this.player.anims.play('teleport', false);
                     this.cameras.main.fadeOut(1000);
                     this.time.delayedCall(100, () => {
