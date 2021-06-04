@@ -104,11 +104,6 @@ class Hud extends Phaser.Scene {
                     this.playScene.cameras.main.fadeOut(500);
                     this.time.delayedCall(500, () =>{
                         this.game.sound.stopAll();
-                       // Will Leave this commented in case we want 
-                        //to any any point attempt menu reset
-                        // this.playScene.scene.stop();
-                        // this.scene.start("menuScene");
-                        // this.playScene.scene.sendToBack();
                         this.playScene.scene.restart();
                         tpLength = 2;
                         console.log('Reset')
