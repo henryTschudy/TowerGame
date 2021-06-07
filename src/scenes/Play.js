@@ -276,9 +276,10 @@ class Play extends Phaser.Scene {
                     this.tweens.add({
                         targets:  this.music,
                         volume:   0,
-                        duration: 1000
+                        duration: 900
                     });
                     this.player.anims.play('teleport', false);
+                    this.player.teleportSound.play();
                     this.cameras.main.fadeOut(1000);
                     this.time.delayedCall(1000, () => {
                         this.scene.stop('hudScene');

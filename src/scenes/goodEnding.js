@@ -7,7 +7,9 @@ class goodEnding extends Phaser.Scene {
         this.load.atlas('finalAnimation1', './assets/sprites/finalAnim1.png', './assets/sprites/finalAnim1.json');
         this.load.atlas('finalAnimation2', './assets/sprites/finalAnim2.png', './assets/sprites/finalAnim2.json');
         this.load.image('creditsImage', './assets/Splash/credits.png');
-        //this.load.audio('menuMusic', './assets/music/');
+        this.load.audio('menuMusic', './assets/music/menu.wav');
+        this.load.audio('TPOut', './assets/music/tpout.wav');
+        this.load.audio('TPOut', './assets/music/tpin.wav');
         this.playScene = this.scene.get("playScene");
         this.cameras.main.fadeOut(0);
     }
@@ -15,7 +17,9 @@ class goodEnding extends Phaser.Scene {
         this.endScene = this.add.sprite(0, 0, 'outside').setOrigin(0,0);
         this.creditsImage = this.add.image(0, 0, 'creditsImage').setOrigin(0, 0);
         this.creditsImage.setAlpha(0);
-        //this.music = this.sound.add('menuMusic');
+        this.music = this.sound.add('menuMusic');
+        this.exitTeleportSound = this.sound.add('TPOut');
+        this.enterTeleportSound = this.sound.add('TPIn');
 
         this.anims.create({
             key: 'endSceneAnim1',
@@ -30,20 +34,21 @@ class goodEnding extends Phaser.Scene {
         });
 
         this.time.delayedCall(1000, () => {
-            //this.music.setLoop(true);
-            //this.music.play();
+            this.music.setLoop(true);
+            this.music.play();
             this.cameras.main.fadeIn(1000);
             this.time.delayedCall(1000, () => {
                 this.endScene.anims.play('endSceneAnim1', true);
+                this.time.delayedCall(1650, () => {
+                    this.exitTeleportSound.play()
+                })
                 this.time.delayedCall(5200, () =>{
                     this.endScene.anims.play('endSceneAnim2', true);
                 });
+                this.time.delayedCall(8000, () => {
+                    this.enterTeleportSound.play()
+                })
                 this.time.delayedCall(10400, () => {
-                    //this.tweens.add({
-                        //targets:  this.music,
-                        //volume:   0,
-                        //duration: 3000
-                    //});
                     this.cameras.main.fadeOut(3000)
                     this.time.delayedCall(3000, () => {
                         this.creditsImage.setAlpha(1);
